@@ -745,7 +745,7 @@
       buildingNames.forEach(buildingName => {
         if (!buildings[buildingName]) { return; } const row = document.createElement('div'); row.className = 'upgrade-row';
         const label = document.createElement('label'); label.textContent = `${buildingName}:`; label.htmlFor = `boost-${buildingName}`;
-        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `⚡ ${Math.round(value * 100)}%`, `boost-${buildingName}`);
+        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `🏭 ${Math.round(value * 100)}%`, `boost-${buildingName}`);
         const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
         const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
         row.appendChild(label); row.appendChild(boostSelect); row.appendChild(upkeepSelect); row.appendChild(workforceSelect); fragment.appendChild(row);
