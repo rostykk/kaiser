@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaiserpunk Production Chain Calculator</title> <!-- Updated Title -->
+  <title>Kaiserpunk Production Chain Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,240 +18,51 @@
       margin-bottom: 0;
       text-align: center;
     }
-    /* --- NEW: Style for link inside H1 --- */
-    h1 a {
-      color: inherit; /* Inherit color from h1 (usually black) */
-      text-decoration: none; /* Remove underline */
-    }
-    h1 a:hover, h1 a:focus { /* Optional hover/focus style */
-        text-decoration: underline; /* Add underline back for usability */
-    }
-    /* --- End Link Style --- */
-
-    h3 {
-      margin-bottom: 0.5em;
-      margin-top: 0;
-    }
-    select, input[type="number"] {
-      padding: 0.5em;
-      margin: 0 0.5em 0.5em 0;
-      min-width: 100px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      vertical-align: middle;
-    }
-    input[type="number"] {
-        width: 80px;
-    }
-    /* Base style for content blocks */
-    .controls, #buildingUpgrades, .output, #graphContainer, #totalsDiv, #externalInputsDiv {
-        background: #eee;
-        padding: 1em;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        box-sizing: border-box;
-    }
-    /* White background for results areas */
-    .output, #graphContainer, #totalsDiv, #externalInputsDiv {
-       background: white;
-    }
-    /* Spacing inside content blocks */
-    .output div, .output ul, #totalsDiv ul, #externalInputsDiv ul {
-      margin: 0.5em 0;
-    }
-    .label {
-      font-weight: bold;
-      margin-bottom: 0.3em;
-      display: block;
-    }
-    ul {
-      padding-left: 1.5em;
-      margin-top: 0.2em;
-      margin-bottom: 1em;
-      list-style: disc;
-    }
-    li {
-        margin-bottom: 0.3em;
-    }
-
-     /* --- START: Controls Layout Update --- */
-    .controls {
-        /* Using block display for labels forces line breaks */
-    }
-    .controls label {
-        display: block; /* Each label starts on a new line */
-        margin-bottom: 0.3em; /* Space below label */
-        font-weight: bold;
-    }
-    .controls label[for="amount"] {
-        margin-top: 0.8em; /* Add space above the second label */
-    }
-    .controls select, .controls input[type="number"] {
-        display: inline-block; /* Keep select/input inline */
-        margin-left: 0; /* Reset left margin */
-        margin-bottom: 0.5em; /* Reset bottom margin if needed */
-        max-width: 300px; /* Prevent them getting too wide */
-    }
-     /* --- END: Controls Layout Update --- */
-
-
-    /* --- CSS FOR LAYOUT --- */
-    .main-container {
-      display: flex;
-      flex-direction: row;
-      gap: 1.5em;
-      align-items: flex-start;
-      margin-top: 1em;
-    }
-
-    .left-column {
-      flex: 0 0 520px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      /* position: sticky; */
-      /* top: 1em; */
-    }
-
-    .center-column {
-      flex: 3;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      min-width: 0;
-    }
-
-    .right-column {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      min-width: 0;
-    }
-
-     /* Building Upgrade Section Specifics */
-     #buildingUpgrades {
-        background: #f8f8f8;
-     }
-     .upgrade-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.5em;
-        gap: 5px;
-        justify-content: space-between;
-    }
-    .upgrade-row label {
-        flex: 0 1 180px;
-        margin-right: 10px;
-        width: auto;
-        margin-bottom: 0;
-        font-size: 0.9em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: bold;
-    }
-    .upgrade-row select {
-        flex: 1 1 90px;
-        min-width: 90px;
-        margin-right: 0;
-        margin-bottom: 0;
-        font-size: 0.85em;
-    }
-
-    /* Styling for the moved Totals/Inputs sections */
-    #totalsDiv, #externalInputsDiv {
-        /* Styles inherited from the base block rule */
-    }
-    #totalsDiv ul, #externalInputsDiv ul {
-        margin-top: 0.2em;
-        margin-bottom: 0.5em;
-        padding-left: 1.5em;
-    }
-    #totalsDiv li, #externalInputsDiv li {
-        margin-bottom: 0.3em;
-    }
-
-    /* Ensure controls/upgrades/output take full width of their columns */
-    .output {
-        margin: 0;
-    }
-
-     #graphContainer {
-        flex-grow: 1;
-        padding: 1em;
-        min-height: 400px;
-        display: flex;
-        flex-direction: column;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        box-sizing: border-box;
-    }
-    #graphDiv {
-         flex-grow: 1;
-         overflow: auto;
-         background: #fdfdfd;
-         border: 1px solid #eee;
-         border-radius: 4px;
-         padding: 0.5em;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         min-height: 300px;
-    }
-
-    .mermaid svg {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
-
-    /* --- Style for highlighted recipe --- */
-    .highlight-recipe {
-        border: 1px solid #a0c0e0;
-        background-color: #f0f8ff;
-        padding: 0.8em;
-        margin-bottom: 1.5em !important;
-        border-radius: 6px;
-    }
+    h1 a { color: inherit; text-decoration: none; }
+    h1 a:hover, h1 a:focus { text-decoration: underline; }
+    h3 { margin-bottom: 0.5em; margin-top: 0; }
+    select, input[type="number"] { padding: 0.5em; margin: 0 0.5em 0.5em 0; min-width: 100px; border: 1px solid #ccc; border-radius: 4px; vertical-align: middle; }
+    input[type="number"] { width: 80px; }
+    .controls, #buildingUpgrades, .output, #graphContainer, #totalsDiv, #externalInputsDiv { background: #eee; padding: 1em; border-radius: 8px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); width: 100%; box-sizing: border-box; }
+    .output, #graphContainer, #totalsDiv, #externalInputsDiv { background: white; }
+    .output div, .output ul, #totalsDiv ul, #externalInputsDiv ul { margin: 0.5em 0; }
+    .label { font-weight: bold; margin-bottom: 0.3em; display: block; }
+    ul { padding-left: 1.5em; margin-top: 0.2em; margin-bottom: 1em; list-style: disc; }
+    li { margin-bottom: 0.3em; }
+    .controls label { display: block; margin-bottom: 0.3em; font-weight: bold; }
+    .controls label[for="amount"] { margin-top: 0.8em; }
+    .controls select, .controls input[type="number"] { display: inline-block; margin-left: 0; margin-bottom: 0.5em; max-width: 300px; }
+    .main-container { display: flex; flex-direction: row; gap: 1.5em; align-items: flex-start; margin-top: 1em; }
+    .left-column { flex: 0 0 520px; display: flex; flex-direction: column; gap: 1.5em; }
+    .center-column { flex: 3; display: flex; flex-direction: column; gap: 1.5em; min-width: 0; }
+    .right-column { flex: 2; display: flex; flex-direction: column; gap: 1.5em; min-width: 0; }
+    #buildingUpgrades { background: #f8f8f8; }
+    .upgrade-row { display: flex; align-items: center; margin-bottom: 0.5em; gap: 5px; justify-content: space-between; }
+    .upgrade-row label { flex: 0 1 180px; margin-right: 10px; width: auto; margin-bottom: 0; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
+    .upgrade-row select { flex: 1 1 90px; min-width: 90px; margin-right: 0; margin-bottom: 0; font-size: 0.85em; }
+    #totalsDiv, #externalInputsDiv {}
+    #totalsDiv ul, #externalInputsDiv ul { margin-top: 0.2em; margin-bottom: 0.5em; padding-left: 1.5em; }
+    #totalsDiv li, #externalInputsDiv li { margin-bottom: 0.3em; }
+    .output { margin: 0; }
+     #graphContainer { flex-grow: 1; padding: 1em; min-height: 400px; display: flex; flex-direction: column; background: white; border-radius: 8px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); width: 100%; box-sizing: border-box; }
+    #graphDiv { flex-grow: 1; overflow: auto; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px; padding: 0.5em; display: flex; justify-content: center; align-items: center; min-height: 300px; }
+    .mermaid svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+    .highlight-recipe { border: 1px solid #a0c0e0; background-color: #f0f8ff; padding: 0.8em; margin-bottom: 1.5em !important; border-radius: 6px; }
     .highlight-recipe .label { color: #0056b3; }
     .highlight-recipe ul { margin-top: 0.3em; margin-bottom: 0.5em; }
-    /* --- End Highlight Style --- */
-
-    /* Responsive stacking for smaller screens */
     @media (max-width: 1300px) {
-        .main-container {
-            flex-direction: column;
-            gap: 1.5em;
-        }
-        .left-column, .center-column, .right-column {
-            flex: 1 1 auto;
-            width: 100%;
-            min-width: 0;
-            max-width: none;
-        }
-        .left-column {
-            position: static;
-            flex-basis: auto;
-        }
+        .main-container { flex-direction: column; gap: 1.5em; }
+        .left-column, .center-column, .right-column { flex: 1 1 auto; width: 100%; min-width: 0; max-width: none; }
+        .left-column { position: static; flex-basis: auto; }
     }
-    /* --- END OF CSS FOR LAYOUT --- */
-
   </style>
-  <!-- 1. Add Mermaid Library -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
-  <!-- Updated H1 with link -->
   <h1> <a href="https://store.steampowered.com/app/2012190/KAISERPUNK/" target="_blank">Kaiserpunk</a> Production Chain Calculator</h1>
 
   <!-- Main Container for Flexbox -->
   <div class="main-container">
-
     <!-- Left Column: Controls, Upgrades, Totals, Inputs -->
     <div class="left-column">
       <div class="controls">
@@ -264,12 +75,10 @@
       <div id="totalsDiv"></div>
       <div id="externalInputsDiv"></div>
     </div>
-
     <!-- Center Column: Recipe, Steps, Buildings -->
     <div class="center-column">
       <div class="output" id="outputDetails">Loading...</div>
     </div>
-
     <!-- Right Column: Graph ONLY -->
     <div class="right-column">
       <div id="graphContainer">
@@ -279,14 +88,10 @@
           </div>
       </div>
     </div>
-
   </div><!-- End of main-container -->
 
-
   <script>
-    // Initialize Mermaid
     mermaid.initialize({ startOnLoad: true, theme: 'default' });
-
     // --- DATA DEFINITIONS (data, buildings) ---
     const data = { /* ... Your data ... */
       "Fish": { output: 10, cycle: 12, inputs: null, base: { "Fish": 1 } },
@@ -571,11 +376,18 @@
         display();
     }
 
+    // Updated handleSelectionChange to always reset amount
     function handleSelectionChange() {
         const selectedProduct = selector.value;
-        // Optionally reset amount to default, or keep user's value
-        // amountInput.value = data[selectedProduct]?.output || 1;
-        display(); // Trigger recalculation
+        const defaultAmount = data[selectedProduct]?.output || 1; // Get the default amount for the NEW product
+
+        console.log(`Product changed to: ${selectedProduct}. Setting Amount Input to default: ${defaultAmount}`);
+
+        // Explicitly set the input field's value
+        amountInput.value = defaultAmount;
+
+        // Call display AFTER setting the value. Display will read the new value.
+        display();
     }
 
     // --- Helper function for formatting numbers ---
