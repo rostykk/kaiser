@@ -28,23 +28,26 @@
       min-width: 100px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      vertical-align: middle; /* Align better with labels if inline */
     }
     input[type="number"] {
         width: 80px;
     }
-    .controls, #buildingUpgrades, .output, #graphContainer {
+    /* Base style for content blocks */
+    .controls, #buildingUpgrades, .output, #graphContainer, #totalsDiv, #externalInputsDiv {
         background: #eee;
         padding: 1em;
         border-radius: 8px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        /* Removed max-width from individual items */
-        width: 100%; /* Make blocks take full width of their column */
-        box-sizing: border-box; /* Include padding/border in width */
+        width: 100%;
+        box-sizing: border-box;
     }
-    .output, #graphContainer { /* White background for results/graph */
+    /* White background for results areas */
+    .output, #graphContainer, #totalsDiv, #externalInputsDiv {
        background: white;
     }
-    .output div, .output ul { /* Consistent spacing in output */
+    /* Spacing inside content blocks */
+    .output div, .output ul, #totalsDiv ul, #externalInputsDiv ul {
       margin: 0.5em 0;
     }
     .label {
@@ -61,124 +64,170 @@
     li {
         margin-bottom: 0.3em;
     }
-    #buildingUpgrades label {
-      display: inline-block;
-      width: 180px;
-      font-weight: bold;
-      vertical-align: middle;
-      margin-bottom: 0.5em;
+
+     /* --- START: Controls Layout Update --- */
+    .controls {
+        /* Using block display for labels forces line breaks */
     }
-    #buildingUpgrades select {
-      margin-right: 0.5em;
-      min-width: 80px;
-      vertical-align: middle;
+    .controls label {
+        display: block; /* Each label starts on a new line */
+        margin-bottom: 0.3em; /* Space below label */
+        font-weight: bold;
     }
-    #buildingUpgrades br {
-        display: none;
+    .controls label[for="amount"] {
+        margin-top: 0.8em; /* Add space above the second label */
     }
-     .upgrade-row {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap; /* Allow wrapping on small screens */
-        margin-bottom: 0.5em;
-        gap: 5px; /* Add small gap between elements */
+    .controls select, .controls input[type="number"] {
+        display: inline-block; /* Keep select/input inline */
+        margin-left: 0; /* Reset left margin */
+        margin-bottom: 0.5em; /* Reset bottom margin if needed */
+        /* Adjust width if needed */
+        /* width: calc(100% - 1em); */ /* Example: Almost full width */
+        max-width: 300px; /* Prevent them getting too wide */
     }
-    .upgrade-row label {
-        flex-basis: 200px;
-        flex-shrink: 0;
-        margin-right: 10px;
-        width: auto; /* Override previous width */
-        margin-bottom: 0; /* Reset margin */
-    }
-    .upgrade-row select {
-        margin-right: 5px;
-        margin-bottom: 0; /* Reset margin */
-    }
+     /* --- END: Controls Layout Update --- */
+
 
     /* --- CSS FOR LAYOUT --- */
     .main-container {
       display: flex;
       flex-direction: row; /* Arrange columns side-by-side */
-      gap: 2em; /* Space between columns */
+      gap: 1.5em; /* Space between columns */
       align-items: flex-start; /* Align items at the top */
       margin-top: 1em; /* Space below title */
     }
 
     .left-column {
-      flex: 3; /* Adjust ratio as needed (e.g., 2 for wider left) */
+      flex: 0 0 520px; /* Don't grow, don't shrink, base width 520px */
       display: flex;
-      flex-direction: column; /* Stack items vertically within left col */
-      gap: 1.5em; /* Space between control/upgrade/output divs */
-      min-width: 0; /* Prevent flex items from overflowing */
-    }
-
-    .right-column {
-      flex: 2; /* Adjust ratio as needed (e.g., 1 for narrower right) */
-      min-width: 0; /* Prevent flex items from overflowing */
-      /* Use sticky positioning if desired (optional) */
-      /* position: sticky; */
+      flex-direction: column;
+      gap: 1.5em;
+      /* position: sticky; */ /* Sticky might interfere with width */
       /* top: 1em; */
     }
 
+    .center-column {
+      flex: 3; /* Main content area takes more relative space */
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+      min-width: 0; /* Allow shrinking */
+    }
+
+    .right-column {
+      flex: 2; /* Graph column */
+      display: flex; /* Use flex to make graph container fill height */
+      flex-direction: column;
+      min-width: 0; /* Allow shrinking */
+    }
+
+     /* Building Upgrade Section Specifics */
+     #buildingUpgrades {
+        background: #f8f8f8; /* Slightly different background */
+     }
+     .upgrade-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5em;
+        gap: 5px;
+        justify-content: space-between; /* Distribute space between label and selects */
+    }
+    .upgrade-row label {
+        flex: 0 1 180px; /* Don't grow, allow shrinking, base width */
+        margin-right: 10px; /* Space after label */
+        width: auto;
+        margin-bottom: 0;
+        font-size: 0.9em;
+        white-space: nowrap; /* Prevent label wrapping */
+        overflow: hidden;
+        text-overflow: ellipsis; /* Add ... if too long */
+        font-weight: bold; /* Make label bold */
+    }
+    .upgrade-row select {
+        flex: 1 1 90px; /* Allow selects to grow/shrink, base size */
+        min-width: 90px; /* Ensure they don't get too small */
+        margin-right: 0; /* Remove right margin */
+        margin-bottom: 0;
+        font-size: 0.85em; /* Slightly smaller font in selects */
+    }
+
+    /* Styling for the moved Totals/Inputs sections */
+    #totalsDiv, #externalInputsDiv {
+        /* Styles inherited from the base block rule */
+    }
+    #totalsDiv ul, #externalInputsDiv ul {
+        margin-top: 0.2em;
+        margin-bottom: 0.5em;
+        padding-left: 1.5em;
+    }
+    #totalsDiv li, #externalInputsDiv li {
+        margin-bottom: 0.3em;
+    }
+
+    /* Ensure controls/upgrades/output take full width of their columns */
+    .output { /* output is now only center column content */
+        margin: 0;
+    }
+
      #graphContainer {
+        flex-grow: 1; /* Graph container takes remaining space in right column */
         padding: 1em;
-        min-height: 400px; /* Give it more initial height */
-        display: flex; /* Use flex to manage label + graph div */
+        min-height: 400px;
+        display: flex;
         flex-direction: column;
-        /* Remove background from container if graph div has it */
-        /* background: none; */
-        /* box-shadow: none; */
-        /* border: none; */
+        background: white; /* Keep container white */
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        box-sizing: border-box;
     }
     #graphDiv {
-         flex-grow: 1; /* Allow graph div to take remaining space */
-         overflow: auto; /* Add scrollbars ONLY to the graph div if needed */
-         background: white; /* Ensure graph has background */
-         border: 1px solid #ddd;
+         flex-grow: 1;
+         overflow: auto;
+         background: #fdfdfd; /* Slightly off-white graph background */
+         border: 1px solid #eee;
          border-radius: 4px;
          padding: 0.5em;
-         display: flex; /* Center initial message */
+         display: flex;
          justify-content: center;
          align-items: center;
+         min-height: 300px; /* Min height for the graph area */
     }
 
     .mermaid svg {
-        max-width: 100%; /* Ensure graph scales down */
+        max-width: 100%;
         height: auto;
-        display: block; /* Fix potential spacing issues */
-        margin: 0 auto; /* Center graph if smaller than container */
+        display: block;
+        margin: 0 auto;
     }
 
-     /* --- Style for highlighted recipe --- */
+    /* --- Style for highlighted recipe --- */
     .highlight-recipe {
-        border: 1px solid #a0c0e0; /* Light blue border */
-        background-color: #f0f8ff; /* Very light blue background */
+        border: 1px solid #a0c0e0;
+        background-color: #f0f8ff;
         padding: 0.8em;
-        margin-bottom: 1.5em !important; /* Ensure space below */
+        margin-bottom: 1.5em !important;
         border-radius: 6px;
     }
-    .highlight-recipe .label {
-        color: #0056b3; /* Darker blue label */
-    }
-    .highlight-recipe ul {
-        margin-top: 0.3em;
-        margin-bottom: 0.5em; /* Less bottom margin inside */
-    }
+    .highlight-recipe .label { color: #0056b3; }
+    .highlight-recipe ul { margin-top: 0.3em; margin-bottom: 0.5em; }
     /* --- End Highlight Style --- */
 
     /* Responsive stacking for smaller screens */
-    @media (max-width: 1000px) { /* Adjust this breakpoint as needed */
+    @media (max-width: 1300px) { /* Adjusted breakpoint for 3 columns */
         .main-container {
             flex-direction: column; /* Stack columns vertically */
             gap: 1.5em;
         }
-        .left-column, .right-column {
+        .left-column, .center-column, .right-column {
             flex: 1 1 auto; /* Reset flex properties for stacking */
             width: 100%;
+            min-width: 0;
+            max-width: none; /* Remove max-width when stacked */
         }
-        .right-column {
-            /* Reset sticky position if used */
-            position: static;
+        .left-column {
+            position: static; /* Reset sticky position */
+            flex-basis: auto; /* Reset fixed basis */
         }
     }
     /* --- END OF CSS FOR LAYOUT --- */
@@ -193,28 +242,36 @@
   <!-- Main Container for Flexbox -->
   <div class="main-container">
 
-    <!-- Left Column Content -->
+    <!-- Left Column: Controls, Upgrades, Totals, Inputs -->
     <div class="left-column">
       <div class="controls">
         <label for="productSelector">Select Product:</label>
         <select id="productSelector"></select>
+        <!-- Label for Amount is now block, pushing input below -->
         <label for="amount">Target Output per Cycle:</label>
         <input type="number" id="amount" value="1" min="0.1" step="0.1" />
       </div>
-
       <div id="buildingUpgrades"></div>
+      <!-- MOVED Totals Placeholder Here -->
+      <div id="totalsDiv"></div>
+      <!-- MOVED External Inputs Placeholder Here -->
+      <div id="externalInputsDiv"></div>
+    </div>
 
+    <!-- Center Column: Recipe, Steps, Buildings -->
+    <div class="center-column">
       <div class="output" id="outputDetails">Loading...</div>
     </div>
 
-    <!-- Right Column Content -->
-    <div class="right-column" id="graphContainer">
-        <div class="label">Production Flow Visualizer:</div>
-        <div class="mermaid" id="graphDiv">
-            <!-- Mermaid graph will be rendered here -->
-            <!-- Initial message -->
-            <p style="text-align: center; color: #888; margin-top: 2em;">Select a product to view visualization.</p>
-        </div>
+    <!-- Right Column: Graph ONLY -->
+    <div class="right-column">
+      <!-- Graph Container -->
+      <div id="graphContainer">
+          <div class="label">Production Flow Visualizer:</div>
+          <div class="mermaid" id="graphDiv">
+              <p style="text-align: center; color: #888; margin-top: 2em;">Select a product to view visualization.</p>
+          </div>
+      </div>
     </div>
 
   </div><!-- End of main-container -->
@@ -222,7 +279,7 @@
 
   <script>
     // Initialize Mermaid
-    mermaid.initialize({ startOnLoad: true, theme: 'default' }); // 'default', 'neutral', 'dark', 'forest'
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
 
     // --- DATA DEFINITIONS (data, buildings) ---
     const data = {
@@ -462,9 +519,12 @@
     // --- DOM ELEMENTS ---
     const selector = document.getElementById('productSelector');
     const amountInput = document.getElementById('amount');
-    const output = document.getElementById('outputDetails');
+    const outputDetailsDiv = document.getElementById('outputDetails');
     const buildingUpgradesDiv = document.getElementById('buildingUpgrades');
-    const graphDiv = document.getElementById('graphDiv');
+    const graphDivElement = document.getElementById('graphDiv');
+    const totalsDivElement = document.getElementById('totalsDiv');
+    const externalInputsDivElement = document.getElementById('externalInputsDiv');
+
 
     // --- STATE & CONSTANTS ---
     const upgradeOptions = [0, 0.2, 0.4, 0.6];
@@ -478,12 +538,12 @@
 
     // --- INITIALIZATION ---
     function initialize() {
-        Object.keys(data).sort().forEach(product => {
+        Object.keys(data).forEach(product => {
             const opt = document.createElement('option'); opt.value = product; opt.textContent = product; selector.appendChild(opt);
         });
         if (Object.keys(data).length > 0) {
-            const initialProduct = Object.keys(data).sort()[0]; selector.value = initialProduct; amountInput.value = data[initialProduct]?.output || 1;
-        } else { console.error("Data object is empty!"); output.innerHTML = "Error: Product data is missing."; return; }
+            const initialProduct = Object.keys(data)[0]; selector.value = initialProduct; amountInput.value = data[initialProduct]?.output || 1;
+        } else { console.error("Data object is empty!"); outputDetailsDiv.innerHTML = "Error: Product data is missing."; return; }
         selector.addEventListener('change', handleSelectionChange);
         amountInput.addEventListener('input', debounce(display, 300));
         display();
@@ -566,45 +626,36 @@
     async function display() {
       const selectedProduct = selector.value; const targetOutput = parseFloat(amountInput.value) || 0;
       if (!selectedProduct || targetOutput <= 0 || !data[selectedProduct]) {
-          output.innerHTML = "Please select a valid product and enter a target output > 0."; buildingUpgradesDiv.innerHTML = ''; graphDiv.innerHTML = '<p style="text-align: center; color: #888; margin-top: 2em;">Calculation error or invalid input.</p>'; activeBuildingSet.clear(); return;
+          outputDetailsDiv.innerHTML = "Please select a valid product and enter a target output > 0.";
+          totalsDivElement.innerHTML = ""; externalInputsDivElement.innerHTML = ""; buildingUpgradesDiv.innerHTML = '';
+          graphDivElement.innerHTML = '<p style="text-align: center; color: #888; margin-top: 2em;">Calculation error or invalid input.</p>'; activeBuildingSet.clear(); return;
       }
       const currentProductBoostMap = {};
       for (const [buildingName, def] of Object.entries(buildings)) { const boost = buildingUpgradeMap[buildingName] || 0; (def.produces || []).forEach(prod => { currentProductBoostMap[prod] = boost; }); }
       const { buildingsNeeded: integerBuildingCounts, usedBuildings, productBoostMap, integerProductNeeds, integerProductOutput } = calculateAllBackward(selectedProduct, targetOutput, currentProductBoostMap);
       const usedBuildingsSet = new Set(usedBuildings);
       if (!setsAreEqual(activeBuildingSet, usedBuildingsSet)) { activeBuildingSet = usedBuildingsSet; createBuildingUpgradeSelectors(usedBuildings); }
-      let html = ''; //html += `<div><span class="label">Product:</span> ${selectedProduct}</div>`; html += `<div><span class="label">Target Output:</span> ${formatNumber(targetOutput, 3)} / cycle</div>`;
 
-      // Highlighted Recipe Section
-      const selectedProductData = data[selectedProduct];
-      const buildingInfoFinal = Object.entries(buildings).find(([, def]) => def.produces?.includes(selectedProduct));
+      // --- Generate HTML for Center Column (#outputDetails) ---
+      let htmlCenter = '';
+      //htmlCenter += `<div><span class="label">Product:</span> ${selectedProduct}</div>`; htmlCenter += `<div><span class="label">Target Output:</span> ${formatNumber(targetOutput, 3)} / cycle</div>`;
+      const selectedProductData = data[selectedProduct]; const buildingInfoFinal = Object.entries(buildings).find(([, def]) => def.produces?.includes(selectedProduct));
       if (selectedProductData && buildingInfoFinal) {
-          const [buildingNameFinal, ] = buildingInfoFinal;
-          const boostFinal = currentProductBoostMap[selectedProduct] || 0;
-          const outputPerFacilityFinal = Math.ceil(selectedProductData.output * (1 + boostFinal));
-          const facilitiesForFinalStep = Math.ceil(targetOutput / outputPerFacilityFinal);
-          const finalBuildingCountDisplay = integerBuildingCounts[buildingNameFinal] || 0;
-          html += `<div class="highlight-recipe">`;
-          html += `<div class="label">Recipe for ${selectedProduct}:</div>`;
-          html += `<ul>`;
-          html += `<li>Target: ${formatNumber(targetOutput, 3)}</li>`;
-          html += `<li>Building: ${buildingNameFinal} (Requires ${facilitiesForFinalStep} for this step, Total Used: ${finalBuildingCountDisplay})</li>`;
-          html += `<li>Output per Facility (Boosted & Rounded): ${outputPerFacilityFinal}</li>`;
-          if (selectedProductData.inputs) {
-              html += `<li>Inputs Required (per Facility):</li><ul>`;
-              Object.entries(selectedProductData.inputs).forEach(([inputName, amountPerFac]) => {
-                  const totalInputNeeded = facilitiesForFinalStep * amountPerFac;
-                  html += `<li>${inputName}: ${formatNumber(amountPerFac, 3)} (Total needed for this step: ${formatNumber(totalInputNeeded, 3)})</li>`;
-              });
-              html += `</ul>`;
-          } else { html += `<li>Inputs Required: None (Base Resource)</li>`; }
-          html += `</ul>`; html += `</div>`;
+            const [buildingNameFinal, ] = buildingInfoFinal; const boostFinal = currentProductBoostMap[selectedProduct] || 0; const outputPerFacilityFinal = Math.ceil(selectedProductData.output * (1 + boostFinal));
+            const facilitiesForFinalStep = Math.ceil(targetOutput / outputPerFacilityFinal); const finalBuildingCountDisplay = integerBuildingCounts[buildingNameFinal] || 0;
+            htmlCenter += `<div class="highlight-recipe">`; htmlCenter += `<div class="label">Recipe for ${selectedProduct}:</div>`; htmlCenter += `<ul>`;
+            htmlCenter += `<li>Target: ${formatNumber(targetOutput, 3)}</li>`; htmlCenter += `<li>Building: ${buildingNameFinal} (Requires ${facilitiesForFinalStep} for this step, Total Used: ${finalBuildingCountDisplay})</li>`;
+            htmlCenter += `<li>Output per Facility (Boosted & Rounded): ${outputPerFacilityFinal}</li>`;
+            if (selectedProductData.inputs) {
+                htmlCenter += `<li>Inputs Required (per Facility):</li><ul>`;
+                Object.entries(selectedProductData.inputs).forEach(([inputName, amountPerFac]) => { const totalInputNeeded = facilitiesForFinalStep * amountPerFac; htmlCenter += `<li>${inputName}: ${formatNumber(amountPerFac, 3)} (Total needed for this step: ${formatNumber(totalInputNeeded, 3)})</li>`; });
+                htmlCenter += `</ul>`;
+            } else { htmlCenter += `<li>Inputs Required: None (Base Resource)</li>`; }
+            htmlCenter += `</ul>`; htmlCenter += `</div>`;
       } else if (selectedProductData && !selectedProductData.inputs) {
-           html += `<div class="highlight-recipe">`; html += `<div class="label">${selectedProduct} is a Base Resource.</div>`; html += `<ul><li>Total Needed: ${formatNumber(targetOutput, 3)}</li></ul>`; html += `</div>`;
+           htmlCenter += `<div class="highlight-recipe">`; htmlCenter += `<div class="label">${selectedProduct} is a Base Resource.</div>`; htmlCenter += `<ul><li>Total Needed: ${formatNumber(targetOutput, 3)}</li></ul>`; htmlCenter += `</div>`;
       }
-
-      // Full Chain Steps
-      html += `<div><span class="label">Full Chain Steps (Detailed Demand & Output):</span><ul>`;
+      htmlCenter += `<div><span class="label">Full Chain Steps (Detailed Demand & Output):</span><ul>`;
       const productSteps = Array.from(Object.keys(integerProductNeeds)).sort((a,b) => a.localeCompare(b));
        productSteps.forEach(productName => {
           const needed = integerProductNeeds[productName] || 0; if (needed <= 1e-9) return;
@@ -614,14 +665,12 @@
           const rawBoosted = productInfo.output * (1 + boost); const outputPerFacility = Math.ceil(rawBoosted); let line = `<li>${productName}: Demand ${formatNumber(needed, 3)}.`;
           if (buildingInfo) {
                const facilitiesForThisStep = Math.ceil(needed / outputPerFacility); const outputForThisStep = facilitiesForThisStep * outputPerFacility;
-               line += ` Use ${count} ${buildingName}(s). Est. Output (from ${facilitiesForThisStep} needed for this step): ${formatNumber(outputForThisStep, 3)} (@ ${outputPerFacility}/fac).`;
+               line += ` Use ${count} ${buildingName}(s). Est. Output (from ${facilitiesForThisStep} needed): ${formatNumber(outputForThisStep, 3)} (@ ${outputPerFacility}/fac).`;
                if (productInfo.inputs && facilitiesForThisStep > 0) { const inputNeedsStr = Object.entries(productInfo.inputs) .map(([i, v]) => `${formatNumber(facilitiesForThisStep * v, 3)} ${i}`) .join(', '); line += ` Needs Inputs: ${inputNeedsStr}.`; }
-          } else { line += " (Base Resource)"; } html += line + `</li>`;
-      }); html += `</ul></div>`;
-
-       // Buildings Required
-       html += `<div><span class="label">Buildings Required (Total Integer):</span><ul>`;
-       let totals = { cash: 0, upkeep: 0, power: 0, water: 0 }; let workforce = {}; const buildingListItems = [];
+          } else { line += " (Base Resource)"; } htmlCenter += line + `</li>`;
+      }); htmlCenter += `</ul></div>`;
+       htmlCenter += `<div><span class="label">Buildings Required (Total Integer):</span><ul>`;
+       let totals = { cash: 0, upkeep: 0, power: 0, water: 0 }; let workforce = {}; // Calculate totals while building this list
        Object.entries(integerBuildingCounts) .sort(([bA], [bB]) => bA.localeCompare(bB)) .forEach(([buildingName, count]) => {
             if (count <= 0) return; const def = buildings[buildingName]; if (!def) { console.warn(`Missing def for ${buildingName}`); return; }
             const upkeepRed = buildingUpkeepReductionMap[buildingName] || 0; const workforceRed = buildingWorkforceReductionMap[buildingName] || 0;
@@ -632,31 +681,34 @@
             let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
             if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`; }
             if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
-            buildingListItems.push(`<li>${buildingName}: ${count}x — ${details}</li>`);
-       }); html += buildingListItems.join(''); html += `</ul></div>`;
+            htmlCenter += `<li>${buildingName}: ${count}x — ${details}</li>`;
+       }); htmlCenter += `</ul></div>`;
+      outputDetailsDiv.innerHTML = htmlCenter;
 
-      // Grand Totals
-       html += `<div><span class="label">Grand Totals:</span><ul>`;
-        const totalSummaryItems = [ `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`, `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`, `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`, `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`, ...Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`) ];
-        html += totalSummaryItems.join(''); html += `</ul></div>`;
+      // --- Generate HTML for Left Column: Totals (#totalsDiv) ---
+      let htmlTotals = `<div class="label">Grand Totals:</div><ul>`;
+      htmlTotals += `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`; htmlTotals += `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`;
+      htmlTotals += `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`; htmlTotals += `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`;
+      htmlTotals += Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`).join('');
+      htmlTotals += `</ul>`;
+      totalsDivElement.innerHTML = htmlTotals;
 
-      // External Inputs Required
-       html += `<div><span class="label">📦 Total External Inputs Required per Cycle (Base Resources):</span><ul>`;
-        const externalInputTotals = {};
-        for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) { const product = data[productName]; if (neededAmount > 1e-9 && !product?.inputs) { externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount; } }
-        const externalInputsList = Object.entries(externalInputTotals) .filter(([, amt]) => amt > 1e-9) .sort(([resA], [resB]) => resA.localeCompare(resB)) .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
-        html += externalInputsList.join('');
-        if (externalInputsList.length === 0) { if (!data[selectedProduct]?.inputs) { html += `<li>None (Selected product is a base resource).</li>`; } else { html += `<li>None (All base inputs seem to be met internally or not required).</li>`; } }
-        html += `</ul></div>`;
+      // --- Generate HTML for Left Column: External Inputs (#externalInputsDiv) ---
+      let htmlInputs = `<div class="label">📦 Total External Inputs Required per Cycle (Base Resources):</div><ul>`;
+      const externalInputTotals = {};
+      for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) { const product = data[productName]; if (neededAmount > 1e-9 && !product?.inputs) { externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount; } }
+      const externalInputsList = Object.entries(externalInputTotals) .filter(([, amt]) => amt > 1e-9) .sort(([resA], [resB]) => resA.localeCompare(resB)) .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
+      htmlInputs += externalInputsList.join('');
+      if (externalInputsList.length === 0) { if (!data[selectedProduct]?.inputs) { htmlInputs += `<li>None (Selected product is a base resource).</li>`; } else { htmlInputs += `<li>None (All base inputs seem to be met internally or not required).</li>`; } }
+      htmlInputs += `</ul>`;
+      externalInputsDivElement.innerHTML = htmlInputs;
 
-      output.innerHTML = html;
-
-      // Render Mermaid Graph
-        try {
-            const mermaidDefinition = generateMermaidGraph(integerBuildingCounts, integerProductNeeds, currentProductBoostMap);
-            graphDiv.innerHTML = mermaidDefinition; graphDiv.removeAttribute('data-processed');
-            await mermaid.run({ nodes: [graphDiv] }); console.log("Mermaid rendering triggered.");
-        } catch (e) { console.error("Error rendering Mermaid graph:", e); graphDiv.innerHTML = "Error generating visualization."; }
+      // --- Render Mermaid Graph ---
+      try {
+          const mermaidDefinition = generateMermaidGraph(integerBuildingCounts, integerProductNeeds, currentProductBoostMap);
+          graphDivElement.innerHTML = mermaidDefinition; graphDivElement.removeAttribute('data-processed');
+          await mermaid.run({ nodes: [graphDivElement] }); console.log("Mermaid rendering triggered.");
+      } catch (e) { console.error("Error rendering Mermaid graph:", e); graphDivElement.innerHTML = '<p style="color: red; text-align: center;">Error generating visualization.</p>'; }
     }
 
     // --- UTILITIES ---
@@ -665,9 +717,9 @@
       buildingNames.forEach(buildingName => {
         if (!buildings[buildingName]) { return; } const row = document.createElement('div'); row.className = 'upgrade-row';
         const label = document.createElement('label'); label.textContent = `${buildingName}:`; label.htmlFor = `boost-${buildingName}`;
-        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `⚡ ${Math.round(value * 100)}% Prod`, `boost-${buildingName}`);
-        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}% Upkeep`, `upkeep-${buildingName}`);
-        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}% Staff`, `workforce-${buildingName}`);
+        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `⚡ ${Math.round(value * 100)}%`, `boost-${buildingName}`);
+        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
+        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
         row.appendChild(label); row.appendChild(boostSelect); row.appendChild(upkeepSelect); row.appendChild(workforceSelect); fragment.appendChild(row);
       }); buildingUpgradesDiv.appendChild(fragment);
       buildingNames.forEach(bName => {
@@ -684,6 +736,7 @@
 
     // --- START ---
     document.addEventListener('DOMContentLoaded', initialize);
+
   </script>
 </body>
 </html>
