@@ -334,7 +334,7 @@ const buildings = {
         const label = document.createElement('label');
         label.textContent = `${building}:`;
 
-        const boost = createSelect(upgradeOptions, buildingUpgradeMap, building, value => `⚡ ${value * 100}%`);
+        const boost = createSelect(upgradeOptions, buildingUpgradeMap, building, value => `🏭 ${value * 100}%`);
         const upkeep = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, building, value => `🧾 -${value * 100}%`);
         const workforce = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, building, value => `👷 -${value * 100}%`);
 
