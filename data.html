@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport for responsiveness -->
   <title>Production Chain Calculator</title>
   <style>
     body {
@@ -15,94 +16,215 @@
     h1 {
       font-size: 1.5em;
       margin-bottom: 0;
+      text-align: center; /* Center title */
     }
     h3 {
       margin-bottom: 0.5em;
+      margin-top: 0; /* Reset top margin */
     }
     select, input[type="number"] {
       padding: 0.5em;
       margin: 0 0.5em 0.5em 0;
       min-width: 100px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     input[type="number"] {
         width: 80px;
     }
-    .controls, #buildingUpgrades {
+    .controls, #buildingUpgrades, .output, #graphContainer {
         background: #eee;
         padding: 1em;
         border-radius: 8px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        max-width: 1000px;
+        /* Removed max-width from individual items */
+        width: 100%; /* Make blocks take full width of their column */
+        box-sizing: border-box; /* Include padding/border in width */
     }
-    .output {
-      background: white;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      max-width: 1000px;
+    .output, #graphContainer { /* White background for results/graph */
+       background: white;
     }
-    .output div, ul {
+    .output div, .output ul { /* Consistent spacing in output */
       margin: 0.5em 0;
     }
     .label {
       font-weight: bold;
+      margin-bottom: 0.3em; /* Space below labels */
+      display: block; /* Make label block for margin */
     }
     ul {
       padding-left: 1.5em;
       margin-top: 0.2em;
       margin-bottom: 1em;
+      list-style: disc; /* Ensure bullet points */
     }
     li {
         margin-bottom: 0.3em;
     }
     #buildingUpgrades label {
       display: inline-block;
-      width: 180px; /* Adjusted width */
+      width: 180px;
       font-weight: bold;
       vertical-align: middle;
       margin-bottom: 0.5em;
     }
     #buildingUpgrades select {
       margin-right: 0.5em;
-      min-width: 80px; /* Adjusted width */
+      min-width: 80px;
       vertical-align: middle;
     }
     #buildingUpgrades br {
-        display: none; /* Use flex/grid or block layout instead of br */
+        display: none;
     }
      .upgrade-row {
         display: flex;
         align-items: center;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
         margin-bottom: 0.5em;
+        gap: 5px; /* Add small gap between elements */
     }
     .upgrade-row label {
-        flex-basis: 200px; /* Fixed width for label */
+        flex-basis: 200px;
         flex-shrink: 0;
-        margin-right: 10px; /* Space between label and selects */
+        margin-right: 10px;
+        width: auto; /* Override previous width */
+        margin-bottom: 0; /* Reset margin */
     }
     .upgrade-row select {
-        margin-right: 5px; /* Space between selects */
+        margin-right: 5px;
+        margin-bottom: 0; /* Reset margin */
     }
+
+    /* --- CSS FOR LAYOUT --- */
+    .main-container {
+      display: flex;
+      flex-direction: row; /* Arrange columns side-by-side */
+      gap: 2em; /* Space between columns */
+      align-items: flex-start; /* Align items at the top */
+      margin-top: 1em; /* Space below title */
+    }
+
+    .left-column {
+      flex: 3; /* Adjust ratio as needed (e.g., 2 for wider left) */
+      display: flex;
+      flex-direction: column; /* Stack items vertically within left col */
+      gap: 1.5em; /* Space between control/upgrade/output divs */
+      min-width: 0; /* Prevent flex items from overflowing */
+    }
+
+    .right-column {
+      flex: 2; /* Adjust ratio as needed (e.g., 1 for narrower right) */
+      min-width: 0; /* Prevent flex items from overflowing */
+      /* Use sticky positioning if desired (optional) */
+      /* position: sticky; */
+      /* top: 1em; */
+    }
+
+     #graphContainer {
+        padding: 1em;
+        min-height: 400px; /* Give it more initial height */
+        display: flex; /* Use flex to manage label + graph div */
+        flex-direction: column;
+        /* Remove background from container if graph div has it */
+        /* background: none; */
+        /* box-shadow: none; */
+        /* border: none; */
+    }
+    #graphDiv {
+         flex-grow: 1; /* Allow graph div to take remaining space */
+         overflow: auto; /* Add scrollbars ONLY to the graph div if needed */
+         background: white; /* Ensure graph has background */
+         border: 1px solid #ddd;
+         border-radius: 4px;
+         padding: 0.5em;
+         display: flex; /* Center initial message */
+         justify-content: center;
+         align-items: center;
+    }
+
+    .mermaid svg {
+        max-width: 100%; /* Ensure graph scales down */
+        height: auto;
+        display: block; /* Fix potential spacing issues */
+        margin: 0 auto; /* Center graph if smaller than container */
+    }
+
+     /* --- Style for highlighted recipe --- */
+    .highlight-recipe {
+        border: 1px solid #a0c0e0; /* Light blue border */
+        background-color: #f0f8ff; /* Very light blue background */
+        padding: 0.8em;
+        margin-bottom: 1.5em !important; /* Ensure space below */
+        border-radius: 6px;
+    }
+    .highlight-recipe .label {
+        color: #0056b3; /* Darker blue label */
+    }
+    .highlight-recipe ul {
+        margin-top: 0.3em;
+        margin-bottom: 0.5em; /* Less bottom margin inside */
+    }
+    /* --- End Highlight Style --- */
+
+    /* Responsive stacking for smaller screens */
+    @media (max-width: 1000px) { /* Adjust this breakpoint as needed */
+        .main-container {
+            flex-direction: column; /* Stack columns vertically */
+            gap: 1.5em;
+        }
+        .left-column, .right-column {
+            flex: 1 1 auto; /* Reset flex properties for stacking */
+            width: 100%;
+        }
+        .right-column {
+            /* Reset sticky position if used */
+            position: static;
+        }
+    }
+    /* --- END OF CSS FOR LAYOUT --- */
+
   </style>
+  <!-- 1. Add Mermaid Library -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
   <h1>Production Chain Calculator</h1>
 
-  <div class="controls">
-    <label for="productSelector">Select Product:</label>
-    <select id="productSelector"></select>
+  <!-- Main Container for Flexbox -->
+  <div class="main-container">
 
-    <label for="amount">Target Output per Cycle:</label>
-    <input type="number" id="amount" value="1" min="0.1" step="0.1" />
-  </div>
+    <!-- Left Column Content -->
+    <div class="left-column">
+      <div class="controls">
+        <label for="productSelector">Select Product:</label>
+        <select id="productSelector"></select>
+        <label for="amount">Target Output per Cycle:</label>
+        <input type="number" id="amount" value="1" min="0.1" step="0.1" />
+      </div>
 
-  <div id="buildingUpgrades"></div>
-  <div class="output" id="outputDetails">Loading...</div>
+      <div id="buildingUpgrades"></div>
+
+      <div class="output" id="outputDetails">Loading...</div>
+    </div>
+
+    <!-- Right Column Content -->
+    <div class="right-column" id="graphContainer">
+        <div class="label">Production Flow Visualizer:</div>
+        <div class="mermaid" id="graphDiv">
+            <!-- Mermaid graph will be rendered here -->
+            <!-- Initial message -->
+            <p style="text-align: center; color: #888; margin-top: 2em;">Select a product to view visualization.</p>
+        </div>
+    </div>
+
+  </div><!-- End of main-container -->
+
 
   <script>
-    // --- DATA DEFINITIONS ---
+    // Initialize Mermaid
+    mermaid.initialize({ startOnLoad: true, theme: 'default' }); // 'default', 'neutral', 'dark', 'forest'
 
-    // Product Recipes and Base Resource Needs
+    // --- DATA DEFINITIONS (data, buildings) ---
     const data = {
       "Fish": { output: 10, cycle: 12, inputs: null, base: { "Fish": 1 } },
       "Grain": { output: 10, cycle: 12, inputs: null, base: { "Grain": 1 } },
@@ -121,7 +243,7 @@
       "Copper": { output: 16, cycle: 12, inputs: null, base: { "Copper": 1 } },
       "Zinc": { output: 7, cycle: 12, inputs: null, base: { "Zinc": 1 } },
       "Brass": { output: 15, cycle: 12, inputs: { "Copper": 3, "Zinc": 5 }, base: { "Copper": 0.2, "Zinc": 0.3333 } },
-      "Vegetables": { output: 10, cycle: 12, inputs: null, base: { "Vegetables": 1 } }, // Added Vegetables base definition
+      "Vegetables": { output: 10, cycle: 12, inputs: null, base: { "Vegetables": 1 } },
       "FoodRations": { output: 8, cycle: 12, inputs: { "Bread": 4, "Vegetables": 4 }, base: { "Grain": 0.0938, "Vegetables": 0.5 } },
       "Gramophone": { output: 5, cycle: 12, inputs: { "Lumber": 4, "Copper": 3 }, base: { "Copper": 0.6, "Wood": 0.1333 } },
       "Ammunition": { output: 10, cycle: 12, inputs: { "Cellulose": 5, "Brass": 3 }, base: { "Copper": 0.06, "Wood": 0.1, "Zinc": 0.1 } },
@@ -199,12 +321,10 @@
       "ElectricityCoal": { output: 200, cycle: 12, inputs: { "Coal": 1 }, base: { "Electricity": 1 } },
       "ElectricityDiesel": { output: 500, cycle: 12, inputs: { "Diesel": 2 }, base: { "Electricity": 1 } },
       "ElectricityGas": { output: 1000, cycle: 12, inputs: { "NaturalGas": 2 }, base: { "Electricity": 1 } },
-      "Water": { output: 300, cycle: 12, inputs: null, base: { "Water": 1 } }, // Assuming this is from a Water Pump
+      "Water": { output: 300, cycle: 12, inputs: null, base: { "Water": 1 } },
       "ElectricityWind": { output: 25, cycle: 12, inputs: null, base: { "Electricity": 1 } },
-      "WaterDesalination": { output: 750, cycle: 12, inputs: null, base: { "Water": 1 } } // Needs electricity input usually, not modeled here
+      "WaterDesalination": { output: 750, cycle: 12, inputs: null, base: { "Water": 1 } }
     };
-
-    // --- Corrected Buildings Data ---
     const buildings = {
       "Farm": { produces: ["Vegetables"], cash: 100, upkeep: 120.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
       "GrainField": { produces: ["Grain"], cash: 100, upkeep: 168.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
@@ -337,7 +457,6 @@
       "Tunnel": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "Park8": { produces: [""], cash: 0, upkeep: 1200.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
     };
-    // --- END OF UPDATED BUILDINGS OBJECT ---
 
 
     // --- DOM ELEMENTS ---
@@ -345,398 +464,226 @@
     const amountInput = document.getElementById('amount');
     const output = document.getElementById('outputDetails');
     const buildingUpgradesDiv = document.getElementById('buildingUpgrades');
+    const graphDiv = document.getElementById('graphDiv');
 
     // --- STATE & CONSTANTS ---
-    const upgradeOptions = [0, 0.2, 0.4, 0.6]; // 0%, 20%, 40%, 60%
-    const upkeepReductionOptions = [0, 0.12, 0.24, 0.36]; // 0%, 12%, 24%, 36%
-    const workforceReductionOptions = [0, 0.15, 0.30, 0.45]; // 0%, 15%, 30%, 45%
-
-    const buildingUpgradeMap = {}; // Stores { buildingName: boostValue }
-    const buildingUpkeepReductionMap = {}; // Stores { buildingName: reductionValue }
-    const buildingWorkforceReductionMap = {}; // Stores { buildingName: reductionValue }
-
-    const workforceEmojis = {
-      Laborers: "🧑‍🌾",
-      Manufacturers: "🏭",
-      Technicians: "🔧",
-      Specialists: "🧠",
-      None: "➖"
-    };
-
-    let activeBuildingSet = new Set(); // Keep track of buildings currently relevant
+    const upgradeOptions = [0, 0.2, 0.4, 0.6];
+    const upkeepReductionOptions = [0, 0.12, 0.24, 0.36];
+    const workforceReductionOptions = [0, 0.15, 0.30, 0.45];
+    const buildingUpgradeMap = {};
+    const buildingUpkeepReductionMap = {};
+    const buildingWorkforceReductionMap = {};
+    const workforceEmojis = { Laborers: "🧑‍🌾", Manufacturers: "🏭", Technicians: "🔧", Specialists: "🧠", None: "➖" };
+    let activeBuildingSet = new Set();
 
     // --- INITIALIZATION ---
     function initialize() {
-        // Populate product selector
         Object.keys(data).sort().forEach(product => {
-          const opt = document.createElement('option');
-          opt.value = product;
-          opt.textContent = product;
-          selector.appendChild(opt);
+            const opt = document.createElement('option'); opt.value = product; opt.textContent = product; selector.appendChild(opt);
         });
-
-        // Set initial product and amount
         if (Object.keys(data).length > 0) {
-            const initialProduct = Object.keys(data).sort()[0];
-            selector.value = initialProduct;
-            amountInput.value = data[initialProduct]?.output || 1;
-        } else {
-            console.error("Data object is empty!");
-            output.innerHTML = "Error: Product data is missing.";
-            return;
-        }
-
-        // Add event listeners
+            const initialProduct = Object.keys(data).sort()[0]; selector.value = initialProduct; amountInput.value = data[initialProduct]?.output || 1;
+        } else { console.error("Data object is empty!"); output.innerHTML = "Error: Product data is missing."; return; }
         selector.addEventListener('change', handleSelectionChange);
         amountInput.addEventListener('input', debounce(display, 300));
-
-        // Initial display
         display();
     }
+    function handleSelectionChange() { const selectedProduct = selector.value; amountInput.value = data[selectedProduct]?.output || 1; display(); }
 
-    function handleSelectionChange() {
-        const selectedProduct = selector.value;
-        amountInput.value = data[selectedProduct]?.output || 1;
-        display();
-    }
+    // --- Helper function for formatting numbers ---
+    function formatNumber(num, precision = 4) { if (typeof num !== 'number' || isNaN(num)) return num; return parseFloat(num.toFixed(precision)); }
 
     // --- CORE CALCULATION LOGIC ---
-
-    // --- Calculate Backward matching screenshot logic ---
     function calculateAllBackward(targetProductName, targetOutput, boostMap) {
-        const integerBuildingCounts = {}; // { buildingName: count } - Aggregated count per type
-        const integerProductNeeds = {}; // { productName: neededAmount } - Tracks max demand at each step
-        const integerProductOutput = {}; // { productName: actualOutput } - Tracks output from integer buildings (based on max demand)
-        const buildingSet = new Set(); // Tracks building types involved
-
-        // Use a Map to properly aggregate demand before processing
-        const demandAggregation = new Map();
-        demandAggregation.set(targetProductName, targetOutput);
-
-        // Queue for processing products (BFS ensures we process levels)
-        const processingQueue = [targetProductName];
-        const visitedForQueueing = new Set([targetProductName]); // Track items added to queue
-
+        const integerBuildingCounts = {}; const integerProductNeeds = {}; const integerProductOutput = {}; const buildingSet = new Set();
+        const demandAggregation = new Map(); demandAggregation.set(targetProductName, targetOutput);
+        const processingQueue = [targetProductName]; const visitedForQueueing = new Set([targetProductName]);
         let head = 0;
-        while(head < processingQueue.length) {
-            const prodName = processingQueue[head++]; // Process in order added
-
-            const currentNeeded = demandAggregation.get(prodName) || 0;
-            if (currentNeeded <= 1e-9) continue;
-
-            // Store the final aggregated demand for display
-            integerProductNeeds[prodName] = currentNeeded;
-
-            const product = data[prodName];
-            if (!product) continue; // Skip if product data missing
-
-            // Find building that produces this product
-            const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(prodName));
-            if (!buildingInfo) continue; // Skip if base resource or config error
-
-            const [buildingName, buildingDef] = buildingInfo;
-            buildingSet.add(buildingName); // Track building type
-
-            // Calculate output per facility (with ceiling)
-            const boost = boostMap[prodName] || 0;
-            const rawBoosted = product.output * (1 + boost);
-            const outputPerFacility = Math.ceil(rawBoosted);
-
-            if (outputPerFacility <= 1e-9) continue; // Skip if no output
-
-            // Calculate integer facilities needed based on aggregated demand
-            const facilitiesInt = Math.ceil(currentNeeded / outputPerFacility);
-
-            // Store the output generated by these integer facilities for this specific product
+        while (head < processingQueue.length) {
+            const prodName = processingQueue[head++]; const currentNeeded = demandAggregation.get(prodName) || 0;
+            if (currentNeeded <= 1e-9) continue; integerProductNeeds[prodName] = currentNeeded;
+            const product = data[prodName]; if (!product) continue;
+            const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(prodName)); if (!buildingInfo) continue;
+            const [buildingName, buildingDef] = buildingInfo; buildingSet.add(buildingName);
+            const boost = boostMap[prodName] || 0; const rawBoosted = product.output * (1 + boost); const outputPerFacility = Math.ceil(rawBoosted);
+            if (outputPerFacility <= 1e-9) continue; const facilitiesInt = Math.ceil(currentNeeded / outputPerFacility);
             integerProductOutput[prodName] = facilitiesInt * outputPerFacility;
-
-            // Aggregate the *maximum* integer count needed for this building *type*
-            // This assumes the building runs at the rate needed for its most demanding product.
             integerBuildingCounts[buildingName] = Math.max(integerBuildingCounts[buildingName] || 0, facilitiesInt);
-
-
-            // Process inputs: Add demand to aggregation map and queue if needed
             if (product.inputs) {
                 for (const [inputName, inputAmount] of Object.entries(product.inputs)) {
-                    // Calculate input demand generated by the integer facilities for *this* step
                     const inputDemand = facilitiesInt * inputAmount;
                     if (inputDemand > 1e-9) {
-                        // Aggregate demand for this input across all places it's needed
-                        const existingDemand = demandAggregation.get(inputName) || 0;
-                        demandAggregation.set(inputName, existingDemand + inputDemand);
-
-                        // Add input to queue only if not already added
-                        if (!visitedForQueueing.has(inputName)) {
-                            processingQueue.push(inputName);
-                            visitedForQueueing.add(inputName);
-                        }
+                        const existingDemand = demandAggregation.get(inputName) || 0; demandAggregation.set(inputName, existingDemand + inputDemand);
+                        if (!visitedForQueueing.has(inputName)) { processingQueue.push(inputName); visitedForQueueing.add(inputName); }
                     }
                 }
             }
         }
-
-        // Final list of buildings actually used (count > 0)
         const finalUsedBuildings = Object.keys(integerBuildingCounts).filter(bName => integerBuildingCounts[bName] > 0);
         const sortedBuildingList = Array.from(finalUsedBuildings).sort();
-
-        return {
-             buildingsNeeded: integerBuildingCounts, // Use the aggregated max counts per type
-             usedBuildings: sortedBuildingList,
-             productBoostMap: boostMap,
-             integerProductNeeds: integerProductNeeds, // Contains aggregated demand
-             integerProductOutput: integerProductOutput // Contains output based on facilities needed for that step
-        };
+        return { buildingsNeeded: integerBuildingCounts, usedBuildings: sortedBuildingList, productBoostMap: boostMap, integerProductNeeds: integerProductNeeds, integerProductOutput: integerProductOutput };
     }
 
+    // --- MERMAID GRAPH GENERATION ---
+    function generateMermaidGraph(intCounts, intNeeds, boostMap) {
+         let mermaidDef = "graph TD;\n"; const nodeDefs = new Map(); const edgeDefs = new Set(); const processedEdges = new Set();
+         const createNodeId = (name, typePrefix = "P") => `${typePrefix}_${name.replace(/[^a-zA-Z0-9_]/g, '_')}`;
+         Object.entries(intNeeds).forEach(([prodName, neededAmount]) => {
+            if (neededAmount <= 1e-9) return; const prodId = createNodeId(prodName, "P");
+            if (!nodeDefs.has(prodId)) { nodeDefs.set(prodId, `${prodId}("${prodName}<br/>Need: ${formatNumber(neededAmount, 1)}");`); }
+         });
+         Object.entries(intCounts).forEach(([buildingName, count]) => {
+             if (count <= 0) return; const buildingId = createNodeId(buildingName, "B");
+             if (!nodeDefs.has(buildingId)) { nodeDefs.set(buildingId, `${buildingId}("${buildingName} (x${count})");`); }
+         });
+         Object.entries(intNeeds).forEach(([prodName, neededAmount]) => {
+              if (neededAmount <= 1e-9) return;
+             const prodId = createNodeId(prodName, "P"); const productInfo = data[prodName];
+             const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(prodName));
+             if (buildingInfo) {
+                  const [buildingName, ] = buildingInfo; const buildingCount = intCounts[buildingName] || 0; if (buildingCount <=0) return;
+                  const buildingId = createNodeId(buildingName, "B");
+                  const boost = boostMap[prodName] || 0; const outputPerFac = Math.ceil((productInfo?.output || 0) * (1 + boost));
+                  const totalOutput = buildingCount * outputPerFac; const edgeKeyBtoP = `${buildingId}->${prodId}`;
+                  if (!processedEdges.has(edgeKeyBtoP)) { edgeDefs.add(`${buildingId} -- Produces ${formatNumber(totalOutput, 1)} --> ${prodId};`); processedEdges.add(edgeKeyBtoP); }
+                  if (productInfo?.inputs) {
+                       const facilitiesForThisStep = Math.ceil(neededAmount / outputPerFac);
+                       Object.entries(productInfo.inputs).forEach(([inputName, inputAmount]) => {
+                           const inputProdId = createNodeId(inputName, "P"); const inputNeededForStep = facilitiesForThisStep * inputAmount;
+                           if (nodeDefs.has(inputProdId)) {
+                               const edgeKeyPtoB = `${inputProdId}->${buildingId}`;
+                               if (!processedEdges.has(edgeKeyPtoB)) { edgeDefs.add(`${inputProdId} -- Consumed ${formatNumber(inputNeededForStep, 1)} --> ${buildingId};`); processedEdges.add(edgeKeyPtoB); }
+                           } else { console.warn(`Graph: Input node ${inputName} not found.`); }
+                       });
+                  }
+             }
+         });
+         mermaidDef += Array.from(nodeDefs.values()).join("\n") + "\n"; mermaidDef += Array.from(edgeDefs).join("\n") + "\n";
+         return mermaidDef;
+     }
 
     // --- DISPLAY LOGIC ---
-    function display() {
-      const selectedProduct = selector.value;
-      const targetOutput = parseFloat(amountInput.value) || 0;
-
+    async function display() {
+      const selectedProduct = selector.value; const targetOutput = parseFloat(amountInput.value) || 0;
       if (!selectedProduct || targetOutput <= 0 || !data[selectedProduct]) {
-          output.innerHTML = "Please select a valid product and enter a target output > 0.";
-          buildingUpgradesDiv.innerHTML = '';
-          activeBuildingSet.clear();
-          return;
+          output.innerHTML = "Please select a valid product and enter a target output > 0."; buildingUpgradesDiv.innerHTML = ''; graphDiv.innerHTML = '<p style="text-align: center; color: #888; margin-top: 2em;">Calculation error or invalid input.</p>'; activeBuildingSet.clear(); return;
       }
-
-      // Prepare Boost Map
       const currentProductBoostMap = {};
-      for (const [buildingName, def] of Object.entries(buildings)) {
-            const boost = buildingUpgradeMap[buildingName] || 0;
-            (def.produces || []).forEach(prod => {
-                currentProductBoostMap[prod] = boost;
-            });
-        }
-
-      // Core calculation using the backward logic
-      const {
-          buildingsNeeded: integerBuildingCounts,
-          usedBuildings,
-          productBoostMap,
-          integerProductNeeds,
-          integerProductOutput
-      } = calculateAllBackward(selectedProduct, targetOutput, currentProductBoostMap);
-
-
-      // Update Upgrade Selectors
+      for (const [buildingName, def] of Object.entries(buildings)) { const boost = buildingUpgradeMap[buildingName] || 0; (def.produces || []).forEach(prod => { currentProductBoostMap[prod] = boost; }); }
+      const { buildingsNeeded: integerBuildingCounts, usedBuildings, productBoostMap, integerProductNeeds, integerProductOutput } = calculateAllBackward(selectedProduct, targetOutput, currentProductBoostMap);
       const usedBuildingsSet = new Set(usedBuildings);
-      if (!setsAreEqual(activeBuildingSet, usedBuildingsSet)) {
-          activeBuildingSet = usedBuildingsSet;
-          createBuildingUpgradeSelectors(usedBuildings);
+      if (!setsAreEqual(activeBuildingSet, usedBuildingsSet)) { activeBuildingSet = usedBuildingsSet; createBuildingUpgradeSelectors(usedBuildings); }
+      let html = ''; //html += `<div><span class="label">Product:</span> ${selectedProduct}</div>`; html += `<div><span class="label">Target Output:</span> ${formatNumber(targetOutput, 3)} / cycle</div>`;
+
+      // Highlighted Recipe Section
+      const selectedProductData = data[selectedProduct];
+      const buildingInfoFinal = Object.entries(buildings).find(([, def]) => def.produces?.includes(selectedProduct));
+      if (selectedProductData && buildingInfoFinal) {
+          const [buildingNameFinal, ] = buildingInfoFinal;
+          const boostFinal = currentProductBoostMap[selectedProduct] || 0;
+          const outputPerFacilityFinal = Math.ceil(selectedProductData.output * (1 + boostFinal));
+          const facilitiesForFinalStep = Math.ceil(targetOutput / outputPerFacilityFinal);
+          const finalBuildingCountDisplay = integerBuildingCounts[buildingNameFinal] || 0;
+          html += `<div class="highlight-recipe">`;
+          html += `<div class="label">Recipe for ${selectedProduct}:</div>`;
+          html += `<ul>`;
+          html += `<li>Target: ${formatNumber(targetOutput, 3)}</li>`;
+          html += `<li>Building: ${buildingNameFinal} (Requires ${facilitiesForFinalStep} for this step, Total Used: ${finalBuildingCountDisplay})</li>`;
+          html += `<li>Output per Facility (Boosted & Rounded): ${outputPerFacilityFinal}</li>`;
+          if (selectedProductData.inputs) {
+              html += `<li>Inputs Required (per Facility):</li><ul>`;
+              Object.entries(selectedProductData.inputs).forEach(([inputName, amountPerFac]) => {
+                  const totalInputNeeded = facilitiesForFinalStep * amountPerFac;
+                  html += `<li>${inputName}: ${formatNumber(amountPerFac, 3)} (Total needed for this step: ${formatNumber(totalInputNeeded, 3)})</li>`;
+              });
+              html += `</ul>`;
+          } else { html += `<li>Inputs Required: None (Base Resource)</li>`; }
+          html += `</ul>`; html += `</div>`;
+      } else if (selectedProductData && !selectedProductData.inputs) {
+           html += `<div class="highlight-recipe">`; html += `<div class="label">${selectedProduct} is a Base Resource.</div>`; html += `<ul><li>Total Needed: ${formatNumber(targetOutput, 3)}</li></ul>`; html += `</div>`;
       }
 
-      // --- Helper function for formatting numbers ---
-      function formatNumber(num, precision = 4) {
-          if (typeof num !== 'number' || isNaN(num)) return num;
-          return parseFloat(num.toFixed(precision));
-      }
-
-
-      // --- Generate HTML Output ---
-      let html = '';
-      html += `<div><span class="label">Product:</span> ${selectedProduct}</div>`;
-      html += `<div><span class="label">Target Output:</span> ${formatNumber(targetOutput, 3)} / cycle</div>`;
-
-      // Display Integer Production Steps (Detailed view)
-      html += `<div><span class="label">Production Steps (Detailed Demand & Output):</span><ul>`;
+      // Full Chain Steps
+      html += `<div><span class="label">Full Chain Steps (Detailed Demand & Output):</span><ul>`;
       const productSteps = Array.from(Object.keys(integerProductNeeds)).sort((a,b) => a.localeCompare(b));
-
-      productSteps.forEach(productName => {
-          const needed = integerProductNeeds[productName] || 0;
-          if (needed <= 1e-9) return;
-
-          const actualOutput = integerProductOutput[productName] || 0;
-          const productInfo = data[productName];
-          if (!productInfo) return;
-
-          const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(productName));
-          const buildingName = buildingInfo ? buildingInfo[0] : null;
-          // Use the final aggregated count for the building type for display consistency
-          const count = buildingName ? (integerBuildingCounts[buildingName] || 0) : 0;
-
-           const boost = productBoostMap[productName] || 0;
-           const rawBoosted = productInfo.output * (1 + boost);
-           const outputPerFacility = Math.ceil(rawBoosted);
-
-          let line = `<li>${productName}: Demand ${formatNumber(needed, 3)}.`;
+       productSteps.forEach(productName => {
+          const needed = integerProductNeeds[productName] || 0; if (needed <= 1e-9) return;
+          const actualOutput = integerProductOutput[productName] || 0; const productInfo = data[productName]; if (!productInfo) return;
+          const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(productName)); const buildingName = buildingInfo ? buildingInfo[0] : null;
+          const count = buildingName ? (integerBuildingCounts[buildingName] || 0) : 0; const boost = productBoostMap[productName] || 0;
+          const rawBoosted = productInfo.output * (1 + boost); const outputPerFacility = Math.ceil(rawBoosted); let line = `<li>${productName}: Demand ${formatNumber(needed, 3)}.`;
           if (buildingInfo) {
-               // Output displayed here is based on facilities calculated for *this specific step's demand* before aggregation
-               const facilitiesForThisStep = Math.ceil(needed / outputPerFacility);
-               const outputForThisStep = facilitiesForThisStep * outputPerFacility;
+               const facilitiesForThisStep = Math.ceil(needed / outputPerFacility); const outputForThisStep = facilitiesForThisStep * outputPerFacility;
                line += ` Use ${count} ${buildingName}(s). Est. Output (from ${facilitiesForThisStep} needed for this step): ${formatNumber(outputForThisStep, 3)} (@ ${outputPerFacility}/fac).`;
-               if (productInfo.inputs && facilitiesForThisStep > 0) {
-                   const inputNeedsStr = Object.entries(productInfo.inputs)
-                       .map(([i, v]) => `${formatNumber(facilitiesForThisStep * v, 3)} ${i}`) // Inputs based on facilities for *this* step
-                       .join(', ');
-                   line += ` Needs Inputs: ${inputNeedsStr}.`;
-               }
-          } else {
-              line += " (Base Resource)"
-          }
-          html += line + `</li>`;
-      });
-      html += `</ul></div>`;
+               if (productInfo.inputs && facilitiesForThisStep > 0) { const inputNeedsStr = Object.entries(productInfo.inputs) .map(([i, v]) => `${formatNumber(facilitiesForThisStep * v, 3)} ${i}`) .join(', '); line += ` Needs Inputs: ${inputNeedsStr}.`; }
+          } else { line += " (Base Resource)"; } html += line + `</li>`;
+      }); html += `</ul></div>`;
 
-
-       // Building Details (Based on Final Aggregated Integer Counts)
-       html += `<div><span class="label">Buildings Required (Integer):</span><ul>`;
-       let totals = { cash: 0, upkeep: 0, power: 0, water: 0 };
-       let workforce = {};
-       const buildingListItems = [];
-       Object.entries(integerBuildingCounts)
-           .sort(([bA], [bB]) => bA.localeCompare(bB))
-           .forEach(([buildingName, count]) => {
-               if (count <= 0) return;
-               const def = buildings[buildingName];
-               if (!def) { console.warn(`Missing def for ${buildingName}`); return; }
-
-               const upkeepRed = buildingUpkeepReductionMap[buildingName] || 0;
-               const workforceRed = buildingWorkforceReductionMap[buildingName] || 0;
-               const totalCash = (def.cash || 0) * count;
-               const totalUpkeep = (def.upkeep || 0) * (1 - upkeepRed) * count;
-               const totalWorkforce = (def.workforce || 0) * (1 - workforceRed) * count;
-               const totalPower = (def.electricity || 0) * count;
-               const totalWater = (def.water || 0) * count;
-
-               totals.cash += totalCash;
-               totals.upkeep += totalUpkeep;
-               totals.power += totalPower;
-               totals.water += totalWater;
-               const wfType = def.workforcetype || 'None';
-                if (wfType !== 'None' && totalWorkforce > 1e-9) {
-                    workforce[wfType] = (workforce[wfType] || 0) + totalWorkforce;
-                }
-
-                let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
-                if (totalWorkforce > 1e-9) {
-                    details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`;
-                } else if (def.workforce > 0) {
-                     details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`;
-                }
-                if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`;
-                if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
-
-               buildingListItems.push(`<li>${buildingName}: ${count}x — ${details}</li>`);
-           });
-       html += buildingListItems.join('');
-       html += `</ul></div>`;
-
+       // Buildings Required
+       html += `<div><span class="label">Buildings Required (Total Integer):</span><ul>`;
+       let totals = { cash: 0, upkeep: 0, power: 0, water: 0 }; let workforce = {}; const buildingListItems = [];
+       Object.entries(integerBuildingCounts) .sort(([bA], [bB]) => bA.localeCompare(bB)) .forEach(([buildingName, count]) => {
+            if (count <= 0) return; const def = buildings[buildingName]; if (!def) { console.warn(`Missing def for ${buildingName}`); return; }
+            const upkeepRed = buildingUpkeepReductionMap[buildingName] || 0; const workforceRed = buildingWorkforceReductionMap[buildingName] || 0;
+            const totalCash = (def.cash || 0) * count; const totalUpkeep = (def.upkeep || 0) * (1 - upkeepRed) * count; const totalWorkforce = (def.workforce || 0) * (1 - workforceRed) * count;
+            const totalPower = (def.electricity || 0) * count; const totalWater = (def.water || 0) * count;
+            totals.cash += totalCash; totals.upkeep += totalUpkeep; totals.power += totalPower; totals.water += totalWater;
+            const wfType = def.workforcetype || 'None'; if (wfType !== 'None' && totalWorkforce > 1e-9) { workforce[wfType] = (workforce[wfType] || 0) + totalWorkforce; }
+            let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
+            if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`; }
+            if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
+            buildingListItems.push(`<li>${buildingName}: ${count}x — ${details}</li>`);
+       }); html += buildingListItems.join(''); html += `</ul></div>`;
 
       // Grand Totals
        html += `<div><span class="label">Grand Totals:</span><ul>`;
-      const totalSummaryItems = [
-          `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`,
-          `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`,
-          `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`,
-          `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`,
-          ...Object.entries(workforce)
-              .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
-              .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`)
-      ];
-       html += totalSummaryItems.join('');
-       html += `</ul></div>`;
+        const totalSummaryItems = [ `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`, `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`, `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`, `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`, ...Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`) ];
+        html += totalSummaryItems.join(''); html += `</ul></div>`;
 
-
-      // Total Raw Inputs Required (External)
+      // External Inputs Required
        html += `<div><span class="label">📦 Total External Inputs Required per Cycle (Base Resources):</span><ul>`;
-      const externalInputTotals = {};
-      for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) {
-           const product = data[productName];
-           // Check if it's a base resource (no inputs defined in 'data')
-           if (neededAmount > 1e-9 && !product?.inputs) {
-               externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount;
-           }
-      }
-       const externalInputsList = Object.entries(externalInputTotals)
-            .filter(([, amt]) => amt > 1e-9)
-            .sort(([resA], [resB]) => resA.localeCompare(resB))
-            .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
+        const externalInputTotals = {};
+        for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) { const product = data[productName]; if (neededAmount > 1e-9 && !product?.inputs) { externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount; } }
+        const externalInputsList = Object.entries(externalInputTotals) .filter(([, amt]) => amt > 1e-9) .sort(([resA], [resB]) => resA.localeCompare(resB)) .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
+        html += externalInputsList.join('');
+        if (externalInputsList.length === 0) { if (!data[selectedProduct]?.inputs) { html += `<li>None (Selected product is a base resource).</li>`; } else { html += `<li>None (All base inputs seem to be met internally or not required).</li>`; } }
+        html += `</ul></div>`;
 
-       html += externalInputsList.join('');
-        if (externalInputsList.length === 0) {
-            if (!data[selectedProduct]?.inputs) {
-                 html += `<li>None (Selected product is a base resource).</li>`;
-            } else {
-                 html += `<li>None (All base inputs seem to be met internally or not required).</li>`;
-            }
-        }
-       html += `</ul></div>`;
-
-      // Update the output div
       output.innerHTML = html;
-    } // End of display function
+
+      // Render Mermaid Graph
+        try {
+            const mermaidDefinition = generateMermaidGraph(integerBuildingCounts, integerProductNeeds, currentProductBoostMap);
+            graphDiv.innerHTML = mermaidDefinition; graphDiv.removeAttribute('data-processed');
+            await mermaid.run({ nodes: [graphDiv] }); console.log("Mermaid rendering triggered.");
+        } catch (e) { console.error("Error rendering Mermaid graph:", e); graphDiv.innerHTML = "Error generating visualization."; }
+    }
 
     // --- UTILITIES ---
     function createBuildingUpgradeSelectors(buildingNames) {
-      buildingUpgradesDiv.innerHTML = '<h3>Per-Building Upgrades</h3>';
-      const fragment = document.createDocumentFragment();
+      buildingUpgradesDiv.innerHTML = '<h3>Per-Building Upgrades</h3>'; const fragment = document.createDocumentFragment();
       buildingNames.forEach(buildingName => {
-        if (!buildings[buildingName]) { return; } // Skip if building def missing (e.g. from old calculation)
-        const row = document.createElement('div');
-        row.className = 'upgrade-row';
-        const label = document.createElement('label');
-        label.textContent = `${buildingName}:`;
-        label.htmlFor = `boost-${buildingName}`;
-        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `🏭 ${Math.round(value * 100)}% Prod`, `boost-${buildingName}`);
+        if (!buildings[buildingName]) { return; } const row = document.createElement('div'); row.className = 'upgrade-row';
+        const label = document.createElement('label'); label.textContent = `${buildingName}:`; label.htmlFor = `boost-${buildingName}`;
+        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `⚡ ${Math.round(value * 100)}% Prod`, `boost-${buildingName}`);
         const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}% Upkeep`, `upkeep-${buildingName}`);
         const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}% Staff`, `workforce-${buildingName}`);
-        row.appendChild(label);
-        row.appendChild(boostSelect);
-        row.appendChild(upkeepSelect);
-        row.appendChild(workforceSelect);
-        fragment.appendChild(row);
+        row.appendChild(label); row.appendChild(boostSelect); row.appendChild(upkeepSelect); row.appendChild(workforceSelect); fragment.appendChild(row);
+      }); buildingUpgradesDiv.appendChild(fragment);
+      buildingNames.forEach(bName => {
+           if (!(bName in buildingUpgradeMap)) buildingUpgradeMap[bName] = 0; if (!(bName in buildingUpkeepReductionMap)) buildingUpkeepReductionMap[bName] = 0; if (!(bName in buildingWorkforceReductionMap)) buildingWorkforceReductionMap[bName] = 0;
       });
-       buildingUpgradesDiv.appendChild(fragment);
-       // Ensure maps have default 0 for any *newly* added buildings
-       buildingNames.forEach(bName => {
-           if (!(bName in buildingUpgradeMap)) buildingUpgradeMap[bName] = 0;
-           if (!(bName in buildingUpkeepReductionMap)) buildingUpkeepReductionMap[bName] = 0;
-           if (!(bName in buildingWorkforceReductionMap)) buildingWorkforceReductionMap[bName] = 0;
-       });
     }
-
     function createSelect(options, map, key, labelFn, id) {
-      const select = document.createElement('select');
-      select.id = id;
-      if (!(key in map)) { map[key] = 0; } // Ensure key exists before checking
-      options.forEach(value => {
-        const opt = document.createElement('option');
-        opt.value = value;
-        opt.textContent = labelFn(value);
-        // Use parseFloat comparison for robustness against "0" vs 0 etc.
-        if (parseFloat(value) === parseFloat(map[key])) {
-          opt.selected = true;
-        }
-        select.appendChild(opt);
-      });
-      select.addEventListener('change', () => {
-        map[key] = parseFloat(select.value);
-        display(); // Re-render everything when an upgrade changes
-      });
-      return select;
+      const select = document.createElement('select'); select.id = id; if (!(key in map)) { map[key] = 0; }
+      options.forEach(value => { const opt = document.createElement('option'); opt.value = value; opt.textContent = labelFn(value); if (parseFloat(value) === parseFloat(map[key])) { opt.selected = true; } select.appendChild(opt); });
+      select.addEventListener('change', () => { map[key] = parseFloat(select.value); display(); }); return select;
     }
-
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => { clearTimeout(timeout); func(...args); };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    function setsAreEqual(setA, setB) {
-        if (setA.size !== setB.size) return false;
-        for (const item of setA) { if (!setB.has(item)) return false; }
-        return true;
-    }
-
+    function debounce(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func(...args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
+    function setsAreEqual(setA, setB) { if (setA.size !== setB.size) return false; for (const item of setA) { if (!setB.has(item)) return false; } return true; }
 
     // --- START ---
     document.addEventListener('DOMContentLoaded', initialize);
-
   </script>
 </body>
 </html>
