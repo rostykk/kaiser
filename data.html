@@ -204,7 +204,7 @@
       "WaterDesalination": { output: 750, cycle: 12, inputs: null, base: { "Water": 1 } } // Needs electricity input usually, not modeled here
     };
 
-    // --- START OF UPDATED BUILDINGS OBJECT ---
+    // --- Corrected Buildings Data ---
     const buildings = {
       "Farm": { produces: ["Vegetables"], cash: 100, upkeep: 120.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
       "GrainField": { produces: ["Grain"], cash: 100, upkeep: 168.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
@@ -336,7 +336,6 @@
       "AsphaltRoad": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "Tunnel": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "Park8": { produces: [""], cash: 0, upkeep: 1200.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      // Removed the empty entry: "": { produces: [], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
     };
     // --- END OF UPDATED BUILDINGS OBJECT ---
 
@@ -402,62 +401,67 @@
     }
 
     // --- CORE CALCULATION LOGIC ---
-    // Using the backward calculation logic from the previous step
 
     // --- Calculate Backward matching screenshot logic ---
     function calculateAllBackward(targetProductName, targetOutput, boostMap) {
-        const integerBuildingCounts = {}; // { buildingName: count }
-        const integerProductNeeds = {}; // { productName: neededAmount } - Tracks demand at each step
-        const integerProductOutput = {}; // { productName: actualOutput } - Tracks output from integer buildings
-        const buildingSet = new Set();
+        const integerBuildingCounts = {}; // { buildingName: count } - Aggregated count per type
+        const integerProductNeeds = {}; // { productName: neededAmount } - Tracks max demand at each step
+        const integerProductOutput = {}; // { productName: actualOutput } - Tracks output from integer buildings (based on max demand)
+        const buildingSet = new Set(); // Tracks building types involved
 
-        // Use a Map to properly aggregate demand for products needed multiple times
+        // Use a Map to properly aggregate demand before processing
         const demandAggregation = new Map();
         demandAggregation.set(targetProductName, targetOutput);
 
-        const processingQueue = [targetProductName]; // Start with target
+        // Queue for processing products (BFS ensures we process levels)
+        const processingQueue = [targetProductName];
         const visitedForQueueing = new Set([targetProductName]); // Track items added to queue
 
         let head = 0;
         while(head < processingQueue.length) {
-            const prodName = processingQueue[head++]; // Process in BFS-like order
+            const prodName = processingQueue[head++]; // Process in order added
 
             const currentNeeded = demandAggregation.get(prodName) || 0;
-            if (currentNeeded <= 1e-9) continue; // Skip if no demand
+            if (currentNeeded <= 1e-9) continue;
 
-            integerProductNeeds[prodName] = currentNeeded; // Store the final aggregated demand
+            // Store the final aggregated demand for display
+            integerProductNeeds[prodName] = currentNeeded;
 
             const product = data[prodName];
-            if (!product) continue;
+            if (!product) continue; // Skip if product data missing
 
+            // Find building that produces this product
             const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(prodName));
-            if (!buildingInfo) continue; // Base resource or config error
+            if (!buildingInfo) continue; // Skip if base resource or config error
 
             const [buildingName, buildingDef] = buildingInfo;
-            buildingSet.add(buildingName);
+            buildingSet.add(buildingName); // Track building type
 
+            // Calculate output per facility (with ceiling)
             const boost = boostMap[prodName] || 0;
             const rawBoosted = product.output * (1 + boost);
             const outputPerFacility = Math.ceil(rawBoosted);
 
-            if (outputPerFacility <= 1e-9) continue;
+            if (outputPerFacility <= 1e-9) continue; // Skip if no output
 
+            // Calculate integer facilities needed based on aggregated demand
             const facilitiesInt = Math.ceil(currentNeeded / outputPerFacility);
 
-            // Store integer count - important: Use the specific count for THIS product/building step
-            // We don't sum building counts directly if one building type makes multiple things in the chain.
-            // Let's store it per product step for now, maybe aggregate later if needed?
-            // For display, we want the total count per building *type*. Let's aggregate here.
-            integerBuildingCounts[buildingName] = Math.max(integerBuildingCounts[buildingName] || 0, facilitiesInt);
-
+            // Store the output generated by these integer facilities for this specific product
             integerProductOutput[prodName] = facilitiesInt * outputPerFacility;
 
-            // Process inputs
+            // Aggregate the *maximum* integer count needed for this building *type*
+            // This assumes the building runs at the rate needed for its most demanding product.
+            integerBuildingCounts[buildingName] = Math.max(integerBuildingCounts[buildingName] || 0, facilitiesInt);
+
+
+            // Process inputs: Add demand to aggregation map and queue if needed
             if (product.inputs) {
                 for (const [inputName, inputAmount] of Object.entries(product.inputs)) {
+                    // Calculate input demand generated by the integer facilities for *this* step
                     const inputDemand = facilitiesInt * inputAmount;
                     if (inputDemand > 1e-9) {
-                        // Aggregate demand for this input
+                        // Aggregate demand for this input across all places it's needed
                         const existingDemand = demandAggregation.get(inputName) || 0;
                         demandAggregation.set(inputName, existingDemand + inputDemand);
 
@@ -471,38 +475,16 @@
             }
         }
 
-        // Refine integerBuildingCounts: Sum counts if a building makes multiple needed items.
-        // This requires mapping product needs back to integer buildings correctly.
-        // The current integerBuildingCounts might overestimate if one building covers multiple needs efficiently.
-        // Let's recalculate integerBuildingCounts based on final aggregated demands.
-        const finalIntegerBuildingCounts = {};
-        for(const [bName, bDef] of Object.entries(buildings)) {
-            let maxFacilitiesNeededForBuilding = 0;
-            bDef.produces.forEach(prodName => {
-                const demand = integerProductNeeds[prodName];
-                if (demand > 1e-9) {
-                    const boost = boostMap[prodName] || 0;
-                    const rawBoosted = data[prodName].output * (1+boost);
-                    const outputPerFacility = Math.ceil(rawBoosted);
-                    if (outputPerFacility > 1e-9) {
-                        maxFacilitiesNeededForBuilding = Math.max(maxFacilitiesNeededForBuilding, Math.ceil(demand / outputPerFacility));
-                    }
-                }
-            });
-            if(maxFacilitiesNeededForBuilding > 0) {
-                finalIntegerBuildingCounts[bName] = maxFacilitiesNeededForBuilding;
-            }
-        }
-
-
-        const sortedBuildingList = Array.from(Object.keys(finalIntegerBuildingCounts)).sort();
+        // Final list of buildings actually used (count > 0)
+        const finalUsedBuildings = Object.keys(integerBuildingCounts).filter(bName => integerBuildingCounts[bName] > 0);
+        const sortedBuildingList = Array.from(finalUsedBuildings).sort();
 
         return {
-             buildingsNeeded: finalIntegerBuildingCounts, // Use the recalculated counts
+             buildingsNeeded: integerBuildingCounts, // Use the aggregated max counts per type
              usedBuildings: sortedBuildingList,
              productBoostMap: boostMap,
-             integerProductNeeds: integerProductNeeds,
-             integerProductOutput: integerProductOutput // Note: Output might exceed need due to integer buildings
+             integerProductNeeds: integerProductNeeds, // Contains aggregated demand
+             integerProductOutput: integerProductOutput // Contains output based on facilities needed for that step
         };
     }
 
@@ -545,21 +527,25 @@
           createBuildingUpgradeSelectors(usedBuildings);
       }
 
+      // --- Helper function for formatting numbers ---
+      function formatNumber(num, precision = 4) {
+          if (typeof num !== 'number' || isNaN(num)) return num;
+          return parseFloat(num.toFixed(precision));
+      }
+
 
       // --- Generate HTML Output ---
       let html = '';
       html += `<div><span class="label">Product:</span> ${selectedProduct}</div>`;
-      html += `<div><span class="label">Target Output:</span> ${targetOutput.toFixed(3)} / cycle</div>`;
+      html += `<div><span class="label">Target Output:</span> ${formatNumber(targetOutput, 3)} / cycle</div>`;
 
-      // Display Integer Production Steps
-      html += `<div><span class="label">Production Steps (Aggregated Demand & Integer Buildings):</span><ul>`;
-
-      const productSteps = Array.from(Object.keys(integerProductNeeds)).sort((a,b) => a.localeCompare(b)); // Simple alpha sort for now
-
+      // Display Integer Production Steps (Detailed view)
+      html += `<div><span class="label">Production Steps (Detailed Demand & Output):</span><ul>`;
+      const productSteps = Array.from(Object.keys(integerProductNeeds)).sort((a,b) => a.localeCompare(b));
 
       productSteps.forEach(productName => {
           const needed = integerProductNeeds[productName] || 0;
-          if (needed <= 1e-9) return; // Don't display steps with no need
+          if (needed <= 1e-9) return;
 
           const actualOutput = integerProductOutput[productName] || 0;
           const productInfo = data[productName];
@@ -567,40 +553,42 @@
 
           const buildingInfo = Object.entries(buildings).find(([, def]) => def.produces?.includes(productName));
           const buildingName = buildingInfo ? buildingInfo[0] : null;
-          // Get count from the FINAL calculated integer counts
+          // Use the final aggregated count for the building type for display consistency
           const count = buildingName ? (integerBuildingCounts[buildingName] || 0) : 0;
 
-          // Calculate output per facility for display
            const boost = productBoostMap[productName] || 0;
            const rawBoosted = productInfo.output * (1 + boost);
            const outputPerFacility = Math.ceil(rawBoosted);
 
-          let line = `<li>${productName}: Demand ${needed.toFixed(3)}.`;
+          let line = `<li>${productName}: Demand ${formatNumber(needed, 3)}.`;
           if (buildingInfo) {
-               line += ` Use ${count} ${buildingName}(s). Estimated Output: ${actualOutput.toFixed(3)} (@ ${outputPerFacility}/fac).`;
-               // Calculate and display the inputs needed *by these integer buildings*
-               if (productInfo.inputs && count > 0) {
-                   line += ` Needs Inputs: ${Object.entries(productInfo.inputs).map(([i, v]) => `${(count * v).toFixed(3)} ${i}`).join(', ')}.`;
+               // Output displayed here is based on facilities calculated for *this specific step's demand* before aggregation
+               const facilitiesForThisStep = Math.ceil(needed / outputPerFacility);
+               const outputForThisStep = facilitiesForThisStep * outputPerFacility;
+               line += ` Use ${count} ${buildingName}(s). Est. Output (from ${facilitiesForThisStep} needed for this step): ${formatNumber(outputForThisStep, 3)} (@ ${outputPerFacility}/fac).`;
+               if (productInfo.inputs && facilitiesForThisStep > 0) {
+                   const inputNeedsStr = Object.entries(productInfo.inputs)
+                       .map(([i, v]) => `${formatNumber(facilitiesForThisStep * v, 3)} ${i}`) // Inputs based on facilities for *this* step
+                       .join(', ');
+                   line += ` Needs Inputs: ${inputNeedsStr}.`;
                }
           } else {
               line += " (Base Resource)"
           }
-
           html += line + `</li>`;
       });
       html += `</ul></div>`;
 
 
-       // Building Details (Based on Final Integer Counts)
+       // Building Details (Based on Final Aggregated Integer Counts)
+       html += `<div><span class="label">Buildings Required (Integer):</span><ul>`;
        let totals = { cash: 0, upkeep: 0, power: 0, water: 0 };
        let workforce = {};
        const buildingListItems = [];
-
-       Object.entries(integerBuildingCounts) // Use the final integer counts
+       Object.entries(integerBuildingCounts)
            .sort(([bA], [bB]) => bA.localeCompare(bB))
            .forEach(([buildingName, count]) => {
                if (count <= 0) return;
-
                const def = buildings[buildingName];
                if (!def) { console.warn(`Missing def for ${buildingName}`); return; }
 
@@ -623,32 +611,36 @@
 
                 let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
                 if (totalWorkforce > 1e-9) {
-                    details += ` | ${workforceEmojis[wfType] || '❓'} ${totalWorkforce.toFixed(2)} ${wfType}`;
+                    details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`;
                 } else if (def.workforce > 0) {
                      details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`;
                 }
-                if (totalPower > 1e-9) details += ` | ⚡${totalPower.toFixed(2)}`;
-                if (totalWater > 1e-9) details += ` | 💧${totalWater.toFixed(2)}`;
+                if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`;
+                if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
 
                buildingListItems.push(`<li>${buildingName}: ${count}x — ${details}</li>`);
            });
+       html += buildingListItems.join('');
+       html += `</ul></div>`;
 
-      html += `<div><span class="label">Buildings Required (Integer):</span><ul>${buildingListItems.join('')}</ul></div>`;
 
-      // Grand Totals (Based on Integer Buildings)
+      // Grand Totals
+       html += `<div><span class="label">Grand Totals:</span><ul>`;
       const totalSummaryItems = [
           `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`,
           `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`,
-          `<li>⚡ Total Electricity Demand: ${totals.power.toFixed(2)}</li>`,
-          `<li>💧 Total Water Demand: ${totals.water.toFixed(2)}</li>`,
+          `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`,
+          `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`,
           ...Object.entries(workforce)
               .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
-              .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${amt.toFixed(2)}</li>`)
+              .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`)
       ];
-       html += `<div><span class="label">Grand Totals:</span><ul>${totalSummaryItems.join('')}</ul></div>`;
+       html += totalSummaryItems.join('');
+       html += `</ul></div>`;
 
 
       // Total Raw Inputs Required (External)
+       html += `<div><span class="label">📦 Total External Inputs Required per Cycle (Base Resources):</span><ul>`;
       const externalInputTotals = {};
       for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) {
            const product = data[productName];
@@ -657,13 +649,10 @@
                externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount;
            }
       }
-
-
-       html += `<div><span class="label">📦 Total External Inputs Required per Cycle (Base Resources):</span><ul>`;
        const externalInputsList = Object.entries(externalInputTotals)
             .filter(([, amt]) => amt > 1e-9)
             .sort(([resA], [resB]) => resA.localeCompare(resB))
-            .map(([res, amt]) => `<li>${res}: ${amt.toFixed(4)}</li>`);
+            .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
 
        html += externalInputsList.join('');
         if (externalInputsList.length === 0) {
@@ -677,14 +666,14 @@
 
       // Update the output div
       output.innerHTML = html;
-    }
+    } // End of display function
 
     // --- UTILITIES ---
     function createBuildingUpgradeSelectors(buildingNames) {
       buildingUpgradesDiv.innerHTML = '<h3>Per-Building Upgrades</h3>';
       const fragment = document.createDocumentFragment();
       buildingNames.forEach(buildingName => {
-        if (!buildings[buildingName]) { return; }
+        if (!buildings[buildingName]) { return; } // Skip if building def missing (e.g. from old calculation)
         const row = document.createElement('div');
         row.className = 'upgrade-row';
         const label = document.createElement('label');
@@ -700,6 +689,7 @@
         fragment.appendChild(row);
       });
        buildingUpgradesDiv.appendChild(fragment);
+       // Ensure maps have default 0 for any *newly* added buildings
        buildingNames.forEach(bName => {
            if (!(bName in buildingUpgradeMap)) buildingUpgradeMap[bName] = 0;
            if (!(bName in buildingUpkeepReductionMap)) buildingUpkeepReductionMap[bName] = 0;
@@ -710,17 +700,20 @@
     function createSelect(options, map, key, labelFn, id) {
       const select = document.createElement('select');
       select.id = id;
-      if (!(key in map)) { map[key] = 0; }
+      if (!(key in map)) { map[key] = 0; } // Ensure key exists before checking
       options.forEach(value => {
         const opt = document.createElement('option');
         opt.value = value;
         opt.textContent = labelFn(value);
-        if (parseFloat(value) === parseFloat(map[key])) { opt.selected = true; }
+        // Use parseFloat comparison for robustness against "0" vs 0 etc.
+        if (parseFloat(value) === parseFloat(map[key])) {
+          opt.selected = true;
+        }
         select.appendChild(opt);
       });
       select.addEventListener('change', () => {
         map[key] = parseFloat(select.value);
-        display();
+        display(); // Re-render everything when an upgrade changes
       });
       return select;
     }
