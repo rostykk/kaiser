@@ -20,7 +20,7 @@
       background: white;
       padding: 1em;
       border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
       max-width: 1000px;
     }
     .output div, ul {
@@ -34,7 +34,7 @@
     }
     #buildingUpgrades label {
       display: inline-block;
-      width: 180px;
+      width: 200px;
       font-weight: bold;
     }
     #buildingUpgrades select {
@@ -56,7 +56,6 @@
   <input type="number" id="amount" value="1" min="1" step="1" />
 
   <div id="buildingUpgrades"></div>
-
   <div class="output" id="outputDetails"></div>
 
   <script>
@@ -293,7 +292,6 @@ const buildings = {
   "Park8": { produces: [""], cash: 0, upkeep: 1200.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
   "": { produces: [], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
 };
-
     const selector = document.getElementById('productSelector');
     const amountInput = document.getElementById('amount');
     const output = document.getElementById('outputDetails');
@@ -308,11 +306,11 @@ const buildings = {
     const buildingWorkforceReductionMap = {};
 
     const workforceEmojis = {
-      "Laborers": "🧑‍🌾",
-      "Manufacturers": "🏭",
-      "Technicians": "🔧",
-      "Specialists": "🧠",
-      "None": "❌"
+      Laborers: "🧑‍🌾",
+      Manufacturers: "🏭",
+      Technicians: "🔧",
+      Specialists: "🧠",
+      None: "❌"
     };
 
     Object.keys(products).forEach(product => {
@@ -323,96 +321,80 @@ const buildings = {
     });
 
     selector.addEventListener('change', () => {
-      const selected = selector.value;
-      amountInput.value = products[selected]?.output || 1;
+      amountInput.value = products[selector.value]?.output || 1;
       display();
     });
 
     amountInput.addEventListener('input', display);
 
-    function createBuildingUpgradeSelectors(usedBuildings) {
+    function createBuildingUpgradeSelectors(buildingNames) {
       buildingUpgrades.innerHTML = '<h3>Per-Building Upgrades</h3>';
-      usedBuildings.forEach(building => {
+
+      buildingNames.forEach(building => {
         const label = document.createElement('label');
         label.textContent = `${building}:`;
 
-        const boostSelect = document.createElement('select');
-        upgradeOptions.forEach(value => {
-          const opt = document.createElement('option');
-          opt.value = value;
-          opt.textContent = `🏭 ${value * 100}%`;
-          if (!buildingUpgradeMap[building]) buildingUpgradeMap[building] = 0;
-          if (value === buildingUpgradeMap[building]) opt.selected = true;
-          boostSelect.appendChild(opt);
-        });
-        boostSelect.addEventListener('change', () => {
-          buildingUpgradeMap[building] = parseFloat(boostSelect.value);
-          display();
-        });
-
-        const upkeepSelect = document.createElement('select');
-        upkeepReductionOptions.forEach(value => {
-          const opt = document.createElement('option');
-          opt.value = value;
-          opt.textContent = `🧾 -${value * 100}%`;
-          if (!buildingUpkeepReductionMap[building]) buildingUpkeepReductionMap[building] = 0;
-          if (value === buildingUpkeepReductionMap[building]) opt.selected = true;
-          upkeepSelect.appendChild(opt);
-        });
-        upkeepSelect.addEventListener('change', () => {
-          buildingUpkeepReductionMap[building] = parseFloat(upkeepSelect.value);
-          display();
-        });
-
-        const workforceSelect = document.createElement('select');
-        workforceReductionOptions.forEach(value => {
-          const opt = document.createElement('option');
-          opt.value = value;
-          opt.textContent = `👷 -${value * 100}%`;
-          if (!buildingWorkforceReductionMap[building]) buildingWorkforceReductionMap[building] = 0;
-          if (value === buildingWorkforceReductionMap[building]) opt.selected = true;
-          workforceSelect.appendChild(opt);
-        });
-        workforceSelect.addEventListener('change', () => {
-          buildingWorkforceReductionMap[building] = parseFloat(workforceSelect.value);
-          display();
-        });
+        const boost = createSelect(upgradeOptions, buildingUpgradeMap, building, value => `⚡ ${value * 100}%`);
+        const upkeep = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, building, value => `🧾 -${value * 100}%`);
+        const workforce = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, building, value => `👷 -${value * 100}%`);
 
         buildingUpgrades.appendChild(label);
-        buildingUpgrades.appendChild(boostSelect);
-        buildingUpgrades.appendChild(upkeepSelect);
-        buildingUpgrades.appendChild(workforceSelect);
+        buildingUpgrades.appendChild(boost);
+        buildingUpgrades.appendChild(upkeep);
+        buildingUpgrades.appendChild(workforce);
         buildingUpgrades.appendChild(document.createElement('br'));
       });
     }
 
-    function calculateAll(productName, targetPerCycle) {
-      const chain = {};
-      const buildingsNeeded = {};
-      const usedBuildings = new Set();
+    function createSelect(options, map, key, labelFn) {
+      const select = document.createElement('select');
+      options.forEach(value => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = labelFn(value);
+        if (!(key in map)) map[key] = 0;
+        if (value === map[key]) opt.selected = true;
+        select.appendChild(opt);
+      });
+      select.addEventListener('change', () => {
+        map[key] = parseFloat(select.value);
+        display();
+      });
+      return select;
+    }
 
-      function recurse(name, ratePerCycle) {
+    function calculateAll(productName, targetPerCycle) {
+  const chain = {};
+  const buildingsNeeded = {};
+  const usedBuildings = new Set();
+
+  const productBoostMap = {};
+  for (const [buildingName, def] of Object.entries(buildings)) {
+    (def.produces || []).forEach(prod => {
+      productBoostMap[prod] = buildingUpgradeMap[buildingName] || 0;
+    });
+  }
+
+  function recurse(name, ratePerCycle) {
         const product = products[name];
         if (!product) return;
 
-        const buildingEntry = Object.entries(buildings).find(([, def]) => def.produces.includes(name));
-        const buildingName = buildingEntry?.[0];
-        const buildingDef = buildingEntry?.[1];
-        if (!buildingDef) return;
+        const [buildingName, def] = Object.entries(buildings).find(([, def]) => def.produces.includes(name)) || [];
+        if (!def) return;
 
         usedBuildings.add(buildingName);
-        const upgradeBonus = buildingUpgradeMap[buildingName] || 0;
-        const boostedOutput = product.output * (1 + upgradeBonus);
+        const boost = productBoostMap[name] || 0;
+        const boostedOutput = product.output * (1 + boost);
         const facilityCount = ratePerCycle / boostedOutput;
 
         chain[name] = (chain[name] || 0) + facilityCount;
         buildingsNeeded[buildingName] = (buildingsNeeded[buildingName] || 0) + facilityCount;
 
         if (product.inputs) {
-          for (const [input, amount] of Object.entries(product.inputs)) {
-            const inputRate = (amount / product.output) * ratePerCycle;
-            recurse(input, inputRate);
-          }
+          Object.entries(product.inputs).forEach(([input, amt]) => {
+            const subRate = (amt / product.output) * ratePerCycle;
+            recurse(input, subRate);
+          });
         }
       }
 
@@ -428,83 +410,84 @@ const buildings = {
       createBuildingUpgradeSelectors(usedBuildings);
 
       output.innerHTML = (() => {
-        const productInfo = `
+        const summary = `
           <div><span class="label">Product:</span> ${product}</div>
           <div><span class="label">Target Output:</span> ${target} / cycle</div>
         `;
 
         const facilityList = Object.entries(chain).map(([p, c]) => {
-          const def = products[p];
-          const inputs = def?.inputs ? Object.entries(def.inputs).map(([inp, amt]) => `${inp}: ${amt}`).join(', ') : 'None';
+          const inputs = products[p]?.inputs
+            ? Object.entries(products[p].inputs).map(([i, v]) => `${i}: ${v}`).join(', ')
+            : 'None';
           return `<li>${p}: ${c.toFixed(2)} facilities — Inputs: ${inputs}</li>`;
         }).join('');
 
-        const buildingsList = Object.entries(buildingsNeeded).map(([b, c]) => {
+        const buildingList = Object.entries(buildingsNeeded).map(([b, c]) => {
           const def = buildings[b];
-          const adjustedUpkeep = def.upkeep * (1 - (buildingUpkeepReductionMap[b] || 0));
-          const adjustedWorkforce = def.workforce * (1 - (buildingWorkforceReductionMap[b] || 0));
+          const boost = buildingUpgradeMap[b] || 0;
+          const upkeepRed = buildingUpkeepReductionMap[b] || 0;
+          const workforceRed = buildingWorkforceReductionMap[b] || 0;
+
           const totalCash = def.cash * c;
-          const totalUpkeep = adjustedUpkeep * c;
-          const totalWorkforce = adjustedWorkforce * c;
-          const totalPower = def.electricity * c;
-          const totalWater = def.water * c;
+          const totalUpkeep = def.upkeep * (1 - upkeepRed) * c;
+          const totalWorkforce = def.workforce * (1 - workforceRed) * c;
+
           return `<li>${b}: ${c.toFixed(2)}x — 💰 Build: $${totalCash.toFixed(0)}, 🧾 Upkeep: $${totalUpkeep.toFixed(0)}, 👷 ${totalWorkforce.toFixed(0)} ${workforceEmojis[def.workforcetype] || ''} ${def.workforcetype}` +
-            (def.electricity > 0 ? `, ⚡ ${totalPower.toFixed(1)}` : '') +
-            (def.water > 0 ? `, 💧 ${totalWater.toFixed(1)}` : '') + `</li>`;
+            (def.electricity > 0 ? `, ⚡ ${def.electricity * c}` : '') +
+            (def.water > 0 ? `, 💧 ${def.water * c}` : '') + `</li>`;
         }).join('');
 
         let totals = { cash: 0, upkeep: 0, power: 0, water: 0 };
         let workforce = {};
+
         Object.entries(buildingsNeeded).forEach(([b, c]) => {
           const def = buildings[b];
-          const adjustedUpkeep = def.upkeep * (1 - (buildingUpkeepReductionMap[b] || 0));
-          const adjustedWorkforce = def.workforce * (1 - (buildingWorkforceReductionMap[b] || 0));
+          const upkeepRed = buildingUpkeepReductionMap[b] || 0;
+          const workforceRed = buildingWorkforceReductionMap[b] || 0;
           totals.cash += def.cash * c;
-          totals.upkeep += adjustedUpkeep * c;
+          totals.upkeep += def.upkeep * (1 - upkeepRed) * c;
           totals.power += def.electricity * c;
           totals.water += def.water * c;
           if (def.workforcetype !== 'None') {
-            workforce[def.workforcetype] = (workforce[def.workforcetype] || 0) + adjustedWorkforce * c;
+            workforce[def.workforcetype] = (workforce[def.workforcetype] || 0) + def.workforce * (1 - workforceRed) * c;
           }
         });
 
-        const totalsList = [
-          `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`,
-          `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(0)}</li>`,
-          `<li>⚡ Total Electricity: ${totals.power.toFixed(1)}</li>`,
-          `<li>💧 Total Water: ${totals.water.toFixed(1)}</li>`
-        ].concat(
-          Object.entries(workforce).map(([type, amt]) => `<li>👷 ${workforceEmojis[type] || ''} ${type}: ${amt.toFixed(0)}</li>`)
+        const totalSummary = `
+          <li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>
+          <li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(0)}</li>
+          <li>⚡ Total Electricity: ${totals.power.toFixed(1)}</li>
+          <li>💧 Total Water: ${totals.water.toFixed(1)}</li>
+        ` + Object.entries(workforce).map(
+          ([type, amt]) => `<li>👷 ${workforceEmojis[type] || ''} ${type}: ${amt.toFixed(0)}</li>`
         ).join('');
 
         const inputTotals = {};
         Object.entries(chain).forEach(([p, c]) => {
-          const def = products[p];
-          if (def?.inputs) {
-            for (const [input, amt] of Object.entries(def.inputs)) {
-              const producingBuilding = Object.entries(buildings).find(([, bd]) => bd.produces.includes(p))?.[0];
-              const bonus = buildingUpgradeMap[producingBuilding] || 0;
-              const total = (amt / def.output) * c * (products[p].output * (1 + bonus));
-              inputTotals[input] = (inputTotals[input] || 0) + total;
-            }
-          }
-        });
+  const def = products[p];
+  if (def?.inputs) {
+    for (const [input, amt] of Object.entries(def.inputs)) {
+      inputTotals[input] = (inputTotals[input] || 0) + amt * c;
+    }
+  }
+});
 
-        const inputList = Object.entries(inputTotals).map(([res, amt]) => `<li>${res}: ${amt.toFixed(2)}</li>`).join('');
+        const inputList = Object.entries(inputTotals).map(
+          ([res, amt]) => `<li>${res}: ${amt.toFixed(2)}</li>`
+        ).join('');
 
         return `
-          ${productInfo}
+          ${summary}
           <div><span class="label">Facility Counts (by Product):</span><ul>${facilityList}</ul></div>
-          <div><span class="label">Buildings Required:</span><ul>${buildingsList}</ul></div>
-          <div><span class="label">Grand Totals:</span><ul>${totalsList}</ul></div>
+          <div><span class="label">Buildings Required:</span><ul>${buildingList}</ul></div>
+          <div><span class="label">Grand Totals:</span><ul>${totalSummary}</ul></div>
           <div><span class="label">📦 Total Inputs Required per Cycle:</span><ul>${inputList}</ul></div>
         `;
       })();
     }
 
-    const initialProduct = Object.keys(products)[0];
-    selector.value = initialProduct;
-    amountInput.value = products[initialProduct]?.output || 1;
+    selector.value = Object.keys(products)[0];
+    amountInput.value = products[selector.value]?.output || 1;
     display();
   </script>
 </body>
