@@ -112,11 +112,11 @@
       "Zinc": { output: 7, cycle: 12, inputs: null, base: { "Zinc": 1 } },
       "Brass": { output: 15, cycle: 12, inputs: { "Copper": 3, "Zinc": 5 }, base: { "Copper": 0.2, "Zinc": 0.3333 } },
       "Vegetables": { output: 10, cycle: 12, inputs: null, base: { "Vegetables": 1 } },
-      "FoodRations": { output: 8, cycle: 12, inputs: { "Bread": 4, "Vegetables": 4 }, base: { "Grain": 0.0938, "Vegetables": 0.5 } },
+      "FoodRations": { output: 8, cycle: 12, inputs: { "Bread": 2, "Vegetables": 2 }, base: { "Grain": 0.0469, "Vegetables": 0.25 } },
       "Gramophone": { output: 5, cycle: 12, inputs: { "Lumber": 4, "Copper": 3 }, base: { "Copper": 0.6, "Wood": 0.1333 } },
       "Ammunition": { output: 10, cycle: 12, inputs: { "Cellulose": 5, "Brass": 3 }, base: { "Copper": 0.06, "Wood": 0.1, "Zinc": 0.1 } },
-      "Handguns": { output: 6, cycle: 12, inputs: { "Lumber": 5, "Steel": 1 }, base: { "Coal": 0.0583, "Iron": 0.0583, "Wood": 0.1389 } },
-      "FieldGun": { output: 1, cycle: 4, inputs: { "Steel": 6 }, base: { "Coal": 2.1, "Iron": 2.1 } },
+      "Handguns": { output: 10, cycle: 12, inputs: { "Lumber": 3, "Steel": 1 }, base: { "Coal": 0.05, "Iron": 0.05, "Wood": 0.05 } },
+      "FieldGun": { output: 2, cycle: 4, inputs: { "Steel": 6 }, base: { "Coal": 1.05, "Iron": 1.05 } },
       "InfantryTank": { output: 1, cycle: 6, inputs: { "Steel": 10 }, base: { "Coal": 3.5, "Iron": 3.5 } },
       "Corvette": { output: 1, cycle: 48, inputs: { "Steel": 40 }, base: { "Coal": 14, "Iron": 14 } },
       "ReconBiplane": { output: 1, cycle: 6, inputs: { "Cloth": 10, "Lumber": 10 }, base: { "Cotton": 2.5, "Wood": 1.6667 } },
@@ -124,7 +124,7 @@
       "Clay": { output: 10, cycle: 12, inputs: null, base: { "Clay": 1 } },
       "Bricks": { output: 10, cycle: 12, inputs: { "Clay": 4, "Coal": 2 }, base: { "Clay": 0.4, "Coal": 0.2 } },
       "Paper": { output: 10, cycle: 12, inputs: { "Cellulose": 12 }, base: { "Wood": 0.24 } },
-      "Newspapers": { output: 5, cycle: 12, inputs: { "Paper": 5 }, base: { "Wood": 0.24 } },
+      "Newspapers": { output: 10, cycle: 12, inputs: { "Paper": 6 }, base: { "Wood": 0.288 } },
       "CrudeOil": { output: 20, cycle: 12, inputs: null, base: { "CrudeOil": 1 } },
       "Diesel": { output: 8, cycle: 12, inputs: { "CrudeOil": 3 }, base: { "CrudeOil": 0.375 } },
       "Rubber": { output: 20, cycle: 12, inputs: { "CrudeOil": 3 }, base: { "CrudeOil": 0.15 } },
@@ -135,7 +135,7 @@
       "Lead": { output: 10, cycle: 12, inputs: { "Galena": 5 }, base: { "Galena": 0.5 } },
       "Silver": { output: 6, cycle: 12, inputs: { "Galena": 5 }, base: { "Galena": 0.8333 } },
       "Radio": { output: 4, cycle: 12, inputs: { "Rubber": 3, "Copper": 3 }, base: { "Copper": 0.75, "CrudeOil": 0.1125 } },
-      "ArtilleryShells": { output: 8, cycle: 12, inputs: { "Lead": 10, "Chemicals": 5 }, base: { "CrudeOil": 0.1042, "Galena": 0.625 } },
+      "ArtilleryShells": { output: 14, cycle: 12, inputs: { "Lead": 10, "Chemicals": 3 }, base: { "CrudeOil": 0.0625, "Galena": 0.3571 } },
       "Rifles": { output: 4, cycle: 12, inputs: { "Steel": 7, "Rubber": 7 }, base: { "Coal": 0.6125, "CrudeOil": 0.2625, "Iron": 0.6125 } },
       "PounderGun": { output: 1, cycle: 4, inputs: { "Steel": 7, "Brass": 10 }, base: { "Coal": 2.45, "Copper": 2, "Iron": 2.45, "Zinc": 3.3333 } },
       "LightTank": { output: 1, cycle: 6, inputs: { "Steel": 10, "Rubber": 10 }, base: { "Coal": 3.5, "CrudeOil": 1.5, "Iron": 3.5 } },
@@ -182,7 +182,7 @@
       "MachineGuns": { output: 2, cycle: 12, inputs: { "Plastics": 15, "Rubber": 15, "AluminumSheets": 3 }, base: { "Aluminum": 0.6, "CrudeOil": 3.725, "Wood": 2 } },
       "HeavyArtillery": { output: 1, cycle: 6, inputs: { "Steel": 15, "Rubber": 20, "ElectricalParts": 10 }, base: { "Coal": 5.25, "Copper": 2.5, "CrudeOil": 3.8333, "Iron": 5.25, "Wood": 0.6667 } },
       "HeavyTank": { output: 1, cycle: 10, inputs: { "Steel": 20, "AluminumSheets": 20, "ElectricalParts": 30 }, base: { "Aluminum": 8, "Coal": 7, "Copper": 7.5, "CrudeOil": 3.8333, "Iron": 7, "Wood": 2 } },
-      "Battleship": { output: 1, cycle: 60, inputs: { "Steel": 150, "Rubber": 150, "ElectricalParts": 150 }, base: { "Coal": 52.5, "Copper": 37.5, "CrudeOil": 35, "Iron": 52.5, "Wood": 10 } },
+      "Battleship": { output: 1, cycle: 60, inputs: { "Steel": 200, "Rubber": 50, "ElectricalParts": 50 }, base: { "Coal": 70, "CrudeOil": 11.667, "Iron": 70, "Copper": 12.5, "Wood": 3.333 } },
       "HeavyFighter": { output: 1, cycle: 12, inputs: { "AluminumSheets": 30, "Rubber": 30, "ElectricalParts": 25 }, base: { "Aluminum": 12, "Copper": 6.25, "CrudeOil": 8.5833, "Wood": 1.6667 } },
       "HeavyBomber": { output: 1, cycle: 20, inputs: { "Steel": 50, "Rubber": 50, "ElectricalParts": 40 }, base: { "Coal": 17.5, "Copper": 10, "CrudeOil": 10.8333, "Iron": 17.5, "Wood": 2.6667 } },
       "Bombs": { output: 3, cycle: 12, inputs: { "Chemicals": 1, "Steel": 1 }, base: { "Coal": 0.1167, "CrudeOil": 0.0556, "Iron": 0.1167 } },
@@ -194,87 +194,87 @@
       "WaterDesalination": { output: 750, cycle: 12, inputs: null, base: { "Water": 1 } }
     };
     const buildings = {
-      "Farm": { produces: ["Vegetables"], cash: 100, upkeep: 120.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "GrainField": { produces: ["Grain"], cash: 100, upkeep: 168.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "FlourMill": { produces: ["Flour"], cash: 600, upkeep: 480.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "Bakery": { produces: ["Bread", "Pie"], cash: 600, upkeep: 600.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "Forester": { produces: ["Wood"], cash: 150, upkeep: 216.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "CelluloseFactory": { produces: ["Cellulose"], cash: 400, upkeep: 600.0, workforce: 20, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
-      "LumberYard": { produces: ["Plywood", "Lumber"], cash: 300, upkeep: 480.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "IronMine": { produces: ["Iron"], cash: 250, upkeep: 600.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "CoalMine": { produces: ["Coal"], cash: 600, upkeep: 480.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "Smelter": { produces: ["Steel", "Brass", "Lead", "Silver"], cash: 250, upkeep: 840.0, workforce: 10, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
-      "CottonField": { produces: ["Cotton"], cash: 200, upkeep: 240.0, workforce: 20, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
-      "Weaver": { produces: ["Cloth", "SilkCloth"], cash: 250, upkeep: 480.0, workforce: 10, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
-      "Clothier": { produces: ["Clothes", "FineGarments"], cash: 250, upkeep: 480.0, workforce: 10, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
-      "CopperMine": { produces: ["Copper"], cash: 600, upkeep: 600.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "ZincMine": { produces: ["Zinc"], cash: 600, upkeep: 600.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "ClayPit": { produces: ["Clay"], cash: 1000, upkeep: 1320.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
-      "Brickworks": { produces: ["Bricks"], cash: 1000, upkeep: 1680.0, workforce: 40, workforcetype: "Laborers", electricity: 10.0, water: 10.0 },
-      "PaperMill": { produces: ["Paper"], cash: 400, upkeep: 840.0, workforce: 20, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
-      "PrintingPress": { produces: ["Newspapers"], cash: 800, upkeep: 1320.0, workforce: 20, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
-      "OilPump": { produces: ["CrudeOil"], cash: 1000, upkeep: 1560.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
-      "DesalinationPlant": { produces: ["WaterDesalination"], cash: 2750, upkeep: 4320.0, workforce: 25, workforcetype: "Technicians", electricity: 40.0, water: 0.0 },
-      "Refinery": { produces: ["Diesel", "Rubber", "Chemicals", "NaturalGas", "Kerosene"], cash: 1000, upkeep: 1920.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 40.0 },
-      "Brewery": { produces: ["Ale"], cash: 500, upkeep: 1080.0, workforce: 10, workforcetype: "Laborers", electricity: 5.0, water: 25.0 },
-      "Ranch": { produces: ["Meat"], cash: 1000, upkeep: 1440.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 20.0 },
-      "Fishery": { produces: ["Fish"], cash: 1000, upkeep: 960.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "GalenaExtractor": { produces: ["Galena"], cash: 2500, upkeep: 2160.0, workforce: 70, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
-      "SoupKitchen": { produces: ["FishSoup"], cash: 1500, upkeep: 2640.0, workforce: 25, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
-      "Orchard": { produces: ["Fruit"], cash: 2000, upkeep: 3240.0, workforce: 70, workforcetype: "Laborers", electricity: 0.0, water: 60.0 },
-      "Juicery": { produces: ["Juice"], cash: 2000, upkeep: 3360.0, workforce: 35, workforcetype: "Manufacturers", electricity: 30.0, water: 50.0 },
-      "LimestoneQuarry": { produces: ["Limestone"], cash: 3000, upkeep: 1800.0, workforce: 80, workforcetype: "Laborers", electricity: 20.0, water: 0.0 },
-      "CementFactory": { produces: ["Cement"], cash: 3000, upkeep: 3240.0, workforce: 40, workforcetype: "Manufacturers", electricity: 30.0, water: 40.0 },
-      "GravelPit": { produces: ["Gravel"], cash: 500, upkeep: 1080.0, workforce: 20, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "ConcreteMixer": { produces: ["Concrete"], cash: 3000, upkeep: 3840.0, workforce: 25, workforcetype: "Technicians", electricity: 90.0, water: 60.0 },
-      "PlasticsFactory": { produces: ["Plastics"], cash: 2000, upkeep: 3840.0, workforce: 30, workforcetype: "Manufacturers", electricity: 40.0, water: 20.0 },
-      "AppliancesFactory": { produces: ["Gramophone", "Telephone", "Radio", "TV"], cash: 1200, upkeep: 2160.0, workforce: 30, workforcetype: "Laborers", electricity: 20.0, water: 20.0 },
-      "SilkwormHatchery": { produces: ["Silk"], cash: 3000, upkeep: 3480.0, workforce: 60, workforcetype: "Laborers", electricity: 5.0, water: 30.0 },
-      "DyeFactory": { produces: ["Dye"], cash: 3000, upkeep: 3480.0, workforce: 30, workforcetype: "Manufacturers", electricity: 20.0, water: 60.0 },
-      "AluminumMine": { produces: ["Aluminum"], cash: 3000, upkeep: 3240.0, workforce: 40, workforcetype: "Manufacturers", electricity: 15.0, water: 0.0 },
-      "AluminumMill": { produces: ["AluminumSheets"], cash: 3000, upkeep: 3840.0, workforce: 25, workforcetype: "Technicians", electricity: 75.0, water: 0.0 },
-      "Cannery": { produces: ["CannedMeat"], cash: 4500, upkeep: 3960.0, workforce: 40, workforcetype: "Technicians", electricity: 40.0, water: 20.0 },
-      "QuartzMine": { produces: ["Quartz"], cash: 4500, upkeep: 1680.0, workforce: 110, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
-      "Glassworks": { produces: ["Glass"], cash: 4500, upkeep: 4320.0, workforce: 30, workforcetype: "Specialists", electricity: 50.0, water: 50.0 },
-      "Vineyard": { produces: ["Grapes"], cash: 3500, upkeep: 3720.0, workforce: 40, workforcetype: "Specialists", electricity: 5.0, water: 20.0 },
-      "Distillery": { produces: ["Wine"], cash: 4500, upkeep: 5400.0, workforce: 30, workforcetype: "Technicians", electricity: 10.0, water: 75.0 },
-      "GoldMine": { produces: ["Gold"], cash: 5000, upkeep: 3240.0, workforce: 100, workforcetype: "Laborers", electricity: 40.0, water: 0.0 },
-      "Jeweler": { produces: ["Jewelry"], cash: 5000, upkeep: 6480.0, workforce: 25, workforcetype: "Specialists", electricity: 20.0, water: 10.0 },
-      "AlgaeFarm": { produces: ["Algae"], cash: 3000, upkeep: 3840.0, workforce: 30, workforcetype: "Technicians", electricity: 15.0, water: 10.0 },
-      "SushiBar": { produces: ["Sushi"], cash: 3000, upkeep: 4800.0, workforce: 30, workforcetype: "Technicians", electricity: 20.0, water: 30.0 },
-      "ElectricFactory": { produces: ["ElectricalParts"], cash: 5000, upkeep: 6480.0, workforce: 30, workforcetype: "Specialists", electricity: 100.0, water: 0.0 },
-      "Pharmacology": { produces: ["Medicines"], cash: 5500, upkeep: 9600.0, workforce: 75, workforcetype: "Specialists", electricity: 80.0, water: 60.0 },
-      "MunitionsFactory": { produces: ["Ammunition", "ArtilleryShells", "Bombs"], cash: 750, upkeep: 1440.0, workforce: 50, workforcetype: "Manufacturers", electricity: 3.0, water: 0.0 },
-      "Factory": { produces: ["FoodRations", "ArmyRations", "Handguns", "Rifles", "SubmachineGuns", "MachineGuns"], cash: 750, upkeep: 1200.0, workforce: 50, workforcetype: "Manufacturers", electricity: 5.0, water: 0.0 },
-      "TankFactory": { produces: ["FieldGun", "PounderGun", "FieldHowitzer", "HeavyArtillery", "InfantryTank", "LightTank", "MediumTank", "HeavyTank"], cash: 1500, upkeep: 2400.0, workforce: 75, workforcetype: "Manufacturers", electricity: 15.0, water: 0.0 },
-      "AircraftFactory": { produces: ["ReconBiplane", "FighterTriplane", "LightFighter", "HeavyFighter", "Blimp", "Airship", "LightBomber", "HeavyBomber"], cash: 3500, upkeep: 3840.0, workforce: 60, workforcetype: "Technicians", electricity: 50.0, water: 10.0 },
-      "Shipyard": { produces: ["Corvette", "Destroyer", "Cruiser", "Battleship"], cash: 2500, upkeep: 5400.0, workforce: 100, workforcetype: "Manufacturers", electricity: 35.0, water: 0.0 },
-      "Depot": { produces: [""], cash: 400, upkeep: 600.0, workforce: 8, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "Warehouse": { produces: [""], cash: 1500, upkeep: 2160.0, workforce: 25, workforcetype: "Manufacturers", electricity: 40.0, water: 10.0 },
-      "TradePort": { produces: [""], cash: 2000, upkeep: 4320.0, workforce: 30, workforcetype: "Manufacturers", electricity: 40.0, water: 15.0 },
-      "Airport": { produces: [""], cash: 5500, upkeep: 6480.0, workforce: 35, workforcetype: "Specialists", electricity: 100.0, water: 40.0 },
-      "CoalPowerPlant": { produces: ["ElectricityCoal"], cash: 1500, upkeep: 1800.0, workforce: 25, workforcetype: "Manufacturers", electricity: 0.0, water: 0.0 },
-      "PowerSubstation": { produces: [""], cash: 100, upkeep: 120.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "WaterPump": { produces: ["Water"], cash: 250, upkeep: 840.0, workforce: 5, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "DieselPowerPlant": { produces: ["ElectricityDiesel"], cash: 2500, upkeep: 2760.0, workforce: 30, workforcetype: "Manufacturers", electricity: 0.0, water: 0.0 },
-      "NaturalGasPowerPlant": { produces: ["ElectricityGas"], cash: 1500, upkeep: 3960.0, workforce: 30, workforcetype: "Specialists", electricity: 0.0, water: 0.0 },
-      "FireStation": { produces: [""], cash: 500, upkeep: 1080.0, workforce: 10, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
-      "PoliceStation": { produces: [""], cash: 1500, upkeep: 1800.0, workforce: 30, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
-      "ElementarySchool": { produces: [""], cash: 1000, upkeep: 1440.0, workforce: 20, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
-      "Highschool": { produces: [""], cash: 2500, upkeep: 2160.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
-      "University": { produces: [""], cash: 5000, upkeep: 4320.0, workforce: 40, workforcetype: "Specialists", electricity: 40.0, water: 50.0 },
-      "ResearchCenter": { produces: [""], cash: 6500, upkeep: 9720.0, workforce: 120, workforcetype: "Specialists", electricity: 150.0, water: 100.0 },
-      "Clinic": { produces: [""], cash: 2000, upkeep: 1560.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
-      "Hospital": { produces: [""], cash: 3500, upkeep: 3240.0, workforce: 30, workforcetype: "Technicians", electricity: 50.0, water: 60.0 },
-      "Courthouse": { produces: [""], cash: 4000, upkeep: 6480.0, workforce: 40, workforcetype: "Technicians", electricity: 40.0, water: 30.0 },
-      "Prison": { produces: [""], cash: 3000, upkeep: 4320.0, workforce: 20, workforcetype: "Technicians", electricity: 15.0, water: 0.0 },
+      "Farm": { produces: ["Vegetables"], cash: 100, upkeep: 5.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "GrainField": { produces: ["Grain"], cash: 100, upkeep: 7.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "FlourMill": { produces: ["Flour"], cash: 600, upkeep: 20.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "Bakery": { produces: ["Bread", "Pie"], cash: 600, upkeep: 25.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "Forester": { produces: ["Wood"], cash: 150, upkeep: 9.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "CelluloseFactory": { produces: ["Cellulose"], cash: 400, upkeep: 25.0, workforce: 20, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
+      "LumberYard": { produces: ["Plywood", "Lumber"], cash: 300, upkeep: 20.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "IronMine": { produces: ["Iron"], cash: 250, upkeep: 25.0, workforce: 10, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "CoalMine": { produces: ["Coal"], cash: 600, upkeep: 20.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "Smelter": { produces: ["Steel", "Brass", "Lead", "Silver"], cash: 250, upkeep: 35.0, workforce: 10, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
+      "CottonField": { produces: ["Cotton"], cash: 200, upkeep: 10.0, workforce: 20, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
+      "Weaver": { produces: ["Cloth", "SilkCloth"], cash: 250, upkeep: 20.0, workforce: 10, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
+      "Clothier": { produces: ["Clothes", "FineGarments"], cash: 250, upkeep: 20.0, workforce: 10, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
+      "CopperMine": { produces: ["Copper"], cash: 600, upkeep: 25.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "ZincMine": { produces: ["Zinc"], cash: 600, upkeep: 25.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "ClayPit": { produces: ["Clay"], cash: 1000, upkeep: 55.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
+      "Brickworks": { produces: ["Bricks"], cash: 1000, upkeep: 70.0, workforce: 40, workforcetype: "Laborers", electricity: 10.0, water: 10.0 },
+      "PaperMill": { produces: ["Paper"], cash: 400, upkeep: 35.0, workforce: 20, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
+      "PrintingPress": { produces: ["Newspapers"], cash: 800, upkeep: 55.0, workforce: 20, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
+      "OilPump": { produces: ["CrudeOil"], cash: 1000, upkeep: 65.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 5.0 },
+      "DesalinationPlant": { produces: ["WaterDesalination"], cash: 2750, upkeep: 180.0, workforce: 25, workforcetype: "Technicians", electricity: 40.0, water: 0.0 },
+      "Refinery": { produces: ["Diesel", "Rubber", "Chemicals", "NaturalGas", "Kerosene"], cash: 1000, upkeep: 80.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 40.0 },
+      "Brewery": { produces: ["Ale"], cash: 500, upkeep: 45.0, workforce: 10, workforcetype: "Laborers", electricity: 5.0, water: 25.0 },
+      "Ranch": { produces: ["Meat"], cash: 1000, upkeep: 60.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 20.0 },
+      "Fishery": { produces: ["Fish"], cash: 1000, upkeep: 40.0, workforce: 40, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "GalenaExtractor": { produces: ["Galena"], cash: 2500, upkeep: 90.0, workforce: 70, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
+      "SoupKitchen": { produces: ["FishSoup"], cash: 1500, upkeep: 110.0, workforce: 25, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
+      "Orchard": { produces: ["Fruit"], cash: 2000, upkeep: 135.0, workforce: 70, workforcetype: "Laborers", electricity: 0.0, water: 60.0 },
+      "Juicery": { produces: ["Juice"], cash: 2000, upkeep: 140.0, workforce: 35, workforcetype: "Manufacturers", electricity: 30.0, water: 50.0 },
+      "LimestoneQuarry": { produces: ["Limestone"], cash: 3000, upkeep: 75.0, workforce: 80, workforcetype: "Laborers", electricity: 20.0, water: 0.0 },
+      "CementFactory": { produces: ["Cement"], cash: 3000, upkeep: 135.0, workforce: 40, workforcetype: "Manufacturers", electricity: 30.0, water: 40.0 },
+      "GravelPit": { produces: ["Gravel"], cash: 500, upkeep: 45.0, workforce: 20, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "ConcreteMixer": { produces: ["Concrete"], cash: 3000, upkeep: 160.0, workforce: 25, workforcetype: "Technicians", electricity: 90.0, water: 60.0 },
+      "PlasticsFactory": { produces: ["Plastics"], cash: 2000, upkeep: 160.0, workforce: 30, workforcetype: "Manufacturers", electricity: 40.0, water: 20.0 },
+      "AppliancesFactory": { produces: ["Gramophone", "Telephone", "Radio", "TV"], cash: 1200, upkeep: 90.0, workforce: 30, workforcetype: "Laborers", electricity: 20.0, water: 20.0 },
+      "SilkwormHatchery": { produces: ["Silk"], cash: 3000, upkeep: 145.0, workforce: 60, workforcetype: "Laborers", electricity: 5.0, water: 30.0 },
+      "DyeFactory": { produces: ["Dye"], cash: 3000, upkeep: 145.0, workforce: 30, workforcetype: "Manufacturers", electricity: 20.0, water: 60.0 },
+      "AluminumMine": { produces: ["Aluminum"], cash: 3000, upkeep: 135.0, workforce: 40, workforcetype: "Manufacturers", electricity: 15.0, water: 0.0 },
+      "AluminumMill": { produces: ["AluminumSheets"], cash: 3000, upkeep: 160.0, workforce: 25, workforcetype: "Technicians", electricity: 75.0, water: 0.0 },
+      "Cannery": { produces: ["CannedMeat"], cash: 4500, upkeep: 165.0, workforce: 40, workforcetype: "Technicians", electricity: 40.0, water: 20.0 },
+      "QuartzMine": { produces: ["Quartz"], cash: 4500, upkeep: 70.0, workforce: 110, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
+      "Glassworks": { produces: ["Glass"], cash: 4500, upkeep: 180.0, workforce: 30, workforcetype: "Specialists", electricity: 50.0, water: 50.0 },
+      "Vineyard": { produces: ["Grapes"], cash: 3500, upkeep: 155.0, workforce: 40, workforcetype: "Specialists", electricity: 5.0, water: 20.0 },
+      "Distillery": { produces: ["Wine"], cash: 4500, upkeep: 225.0, workforce: 30, workforcetype: "Technicians", electricity: 10.0, water: 75.0 },
+      "GoldMine": { produces: ["Gold"], cash: 5000, upkeep: 135.0, workforce: 100, workforcetype: "Laborers", electricity: 40.0, water: 0.0 },
+      "Jeweler": { produces: ["Jewelry"], cash: 5000, upkeep: 270.0, workforce: 25, workforcetype: "Specialists", electricity: 20.0, water: 10.0 },
+      "AlgaeFarm": { produces: ["Algae"], cash: 3000, upkeep: 160.0, workforce: 30, workforcetype: "Technicians", electricity: 15.0, water: 10.0 },
+      "SushiBar": { produces: ["Sushi"], cash: 3000, upkeep: 200.0, workforce: 30, workforcetype: "Technicians", electricity: 20.0, water: 30.0 },
+      "ElectricFactory": { produces: ["ElectricalParts"], cash: 5000, upkeep: 270.0, workforce: 30, workforcetype: "Specialists", electricity: 100.0, water: 0.0 },
+      "Pharmacology": { produces: ["Medicines"], cash: 5500, upkeep: 400.0, workforce: 75, workforcetype: "Specialists", electricity: 80.0, water: 60.0 },
+      "MunitionsFactory": { produces: ["Ammunition", "ArtilleryShells", "Bombs"], cash: 750, upkeep: 60.0, workforce: 50, workforcetype: "Manufacturers", electricity: 3.0, water: 0.0 },
+      "Factory": { produces: ["FoodRations", "ArmyRations", "Handguns", "Rifles", "SubmachineGuns", "MachineGuns"], cash: 750, upkeep: 50.0, workforce: 50, workforcetype: "Manufacturers", electricity: 5.0, water: 0.0 },
+      "TankFactory": { produces: ["FieldGun", "PounderGun", "FieldHowitzer", "HeavyArtillery", "InfantryTank", "LightTank", "MediumTank", "HeavyTank"], cash: 1500, upkeep: 100.0, workforce: 75, workforcetype: "Manufacturers", electricity: 15.0, water: 0.0 },
+      "AircraftFactory": { produces: ["ReconBiplane", "FighterTriplane", "LightFighter", "HeavyFighter", "Blimp", "Airship", "LightBomber", "HeavyBomber"], cash: 3500, upkeep: 160.0, workforce: 60, workforcetype: "Technicians", electricity: 50.0, water: 10.0 },
+      "Shipyard": { produces: ["Corvette", "Destroyer", "Cruiser", "Battleship"], cash: 2500, upkeep: 225.0, workforce: 100, workforcetype: "Manufacturers", electricity: 35.0, water: 0.0 },
+      "Depot": { produces: [""], cash: 400, upkeep: 25.0, workforce: 8, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "Warehouse": { produces: [""], cash: 1500, upkeep: 90.0, workforce: 25, workforcetype: "Manufacturers", electricity: 40.0, water: 10.0 },
+      "TradePort": { produces: [""], cash: 2000, upkeep: 180.0, workforce: 30, workforcetype: "Manufacturers", electricity: 40.0, water: 15.0 },
+      "Airport": { produces: [""], cash: 5500, upkeep: 270.0, workforce: 35, workforcetype: "Specialists", electricity: 100.0, water: 40.0 },
+      "CoalPowerPlant": { produces: ["ElectricityCoal"], cash: 1500, upkeep: 75.0, workforce: 25, workforcetype: "Manufacturers", electricity: 0.0, water: 0.0 },
+      "PowerSubstation": { produces: [""], cash: 100, upkeep: 5.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "WaterPump": { produces: ["Water"], cash: 250, upkeep: 35.0, workforce: 5, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "DieselPowerPlant": { produces: ["ElectricityDiesel"], cash: 2500, upkeep: 115.0, workforce: 30, workforcetype: "Manufacturers", electricity: 0.0, water: 0.0 },
+      "NaturalGasPowerPlant": { produces: ["ElectricityGas"], cash: 1500, upkeep: 165.0, workforce: 30, workforcetype: "Specialists", electricity: 0.0, water: 0.0 },
+      "FireStation": { produces: [""], cash: 500, upkeep: 45.0, workforce: 10, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
+      "PoliceStation": { produces: [""], cash: 1500, upkeep: 75.0, workforce: 30, workforcetype: "Laborers", electricity: 10.0, water: 0.0 },
+      "ElementarySchool": { produces: [""], cash: 1000, upkeep: 60.0, workforce: 20, workforcetype: "Laborers", electricity: 5.0, water: 0.0 },
+      "Highschool": { produces: [""], cash: 2500, upkeep: 90.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
+      "University": { produces: [""], cash: 5000, upkeep: 180.0, workforce: 40, workforcetype: "Specialists", electricity: 40.0, water: 50.0 },
+      "ResearchCenter": { produces: [""], cash: 6500, upkeep: 405.0, workforce: 120, workforcetype: "Specialists", electricity: 150.0, water: 100.0 },
+      "Clinic": { produces: [""], cash: 2000, upkeep: 65.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 30.0 },
+      "Hospital": { produces: [""], cash: 3500, upkeep: 135.0, workforce: 30, workforcetype: "Technicians", electricity: 50.0, water: 60.0 },
+      "Courthouse": { produces: [""], cash: 4000, upkeep: 270.0, workforce: 40, workforcetype: "Technicians", electricity: 40.0, water: 30.0 },
+      "Prison": { produces: [""], cash: 3000, upkeep: 180.0, workforce: 20, workforcetype: "Technicians", electricity: 15.0, water: 15.0 },
       "MilitaryBase": { produces: [""], cash: 1000, upkeep: 0.0, workforce: 0, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
       "NavalBase": { produces: [""], cash: 5000, upkeep: 0.0, workforce: 0, workforcetype: "Manufacturers", electricity: 15.0, water: 0.0 },
       "Airbase": { produces: [""], cash: 7500, upkeep: 0.0, workforce: 0, workforcetype: "Technicians", electricity: 35.0, water: 0.0 },
-      "RecordLabel": { produces: [""], cash: 2000, upkeep: 2160.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 15.0 },
-      "RadioStation": { produces: [""], cash: 2500, upkeep: 4320.0, workforce: 20, workforcetype: "Technicians", electricity: 50.0, water: 15.0 },
-      "TVStation": { produces: [""], cash: 6000, upkeep: 6480.0, workforce: 30, workforcetype: "Specialists", electricity: 100.0, water: 20.0 },
-      "JazzClub": { produces: [""], cash: 6500, upkeep: 8640.0, workforce: 35, workforcetype: "Specialists", electricity: 90.0, water: 60.0 },
+      "RecordLabel": { produces: [""], cash: 2000, upkeep: 90.0, workforce: 20, workforcetype: "Manufacturers", electricity: 10.0, water: 15.0 },
+      "RadioStation": { produces: [""], cash: 2500, upkeep: 180.0, workforce: 20, workforcetype: "Technicians", electricity: 50.0, water: 15.0 },
+      "TVStation": { produces: [""], cash: 6000, upkeep: 270.0, workforce: 30, workforcetype: "Specialists", electricity: 100.0, water: 20.0 },
+      "JazzClub": { produces: [""], cash: 6500, upkeep: 360.0, workforce: 35, workforcetype: "Specialists", electricity: 90.0, water: 60.0 },
       "HouseLowDensity1": { produces: [""], cash: 0, upkeep: 0.0, workforce: 30, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
       "HouseLowDensity2": { produces: [""], cash: 0, upkeep: 0.0, workforce: 30, workforcetype: "Manufacturers", electricity: 0.0, water: 0.2 },
       "HouseLowDensity3": { produces: [""], cash: 0, upkeep: 0.0, workforce: 30, workforcetype: "Technicians", electricity: 0.5, water: 0.4 },
@@ -284,46 +284,59 @@
       "HouseHighDensity3": { produces: [""], cash: 0, upkeep: 0.0, workforce: 80, workforcetype: "Technicians", electricity: 0.5, water: 0.4 },
       "HouseHighDensity4": { produces: [""], cash: 0, upkeep: 0.0, workforce: 80, workforcetype: "Specialists", electricity: 1.0, water: 0.6 },
       "TownCenter": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Windmill": { produces: ["ElectricityWind"], cash: 200, upkeep: 240.0, workforce: 3, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "Market": { produces: [""], cash: 1000, upkeep: 1680.0, workforce: 15, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
-      "WaterTower": { produces: [""], cash: 150, upkeep: 120.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
-      "LawnT1": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "LawnT2": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PlazaT1": { produces: [""], cash: 0, upkeep: 48.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PlazaT2": { produces: [""], cash: 0, upkeep: 48.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PlazaT3": { produces: [""], cash: 0, upkeep: 48.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PlazaT4": { produces: [""], cash: 0, upkeep: 48.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park1": { produces: [""], cash: 0, upkeep: 216.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park2": { produces: [""], cash: 0, upkeep: 216.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park3": { produces: [""], cash: 0, upkeep: 216.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park4": { produces: [""], cash: 0, upkeep: 480.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park5": { produces: [""], cash: 0, upkeep: 480.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park6": { produces: [""], cash: 0, upkeep: 600.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park7": { produces: [""], cash: 0, upkeep: 1080.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "TreeT1": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "TreeT2": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "TreeT3": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "TreeT4": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "HedgeT1": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "HedgeT2": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "HedgeT3": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "HedgeT4": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "FenceT1": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "FenceT2": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "FenceT3": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "FenceT4": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PondT1": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PondT2": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PondT3": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "PondT4": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Windmill": { produces: ["ElectricityWind"], cash: 200, upkeep: 10.0, workforce: 3, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "Market": { produces: [""], cash: 1000, upkeep: 70.0, workforce: 15, workforcetype: "Laborers", electricity: 15.0, water: 0.0 },
+      "WaterTower": { produces: [""], cash: 150, upkeep: 5.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "LawnT1": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "LawnT2": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PlazaT1": { produces: [""], cash: 0, upkeep: 2.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PlazaT2": { produces: [""], cash: 0, upkeep: 2.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PlazaT3": { produces: [""], cash: 0, upkeep: 2.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PlazaT4": { produces: [""], cash: 0, upkeep: 2.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park1": { produces: [""], cash: 0, upkeep: 9.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park2": { produces: [""], cash: 0, upkeep: 9.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park3": { produces: [""], cash: 0, upkeep: 9.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park4": { produces: [""], cash: 0, upkeep: 20.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park5": { produces: [""], cash: 0, upkeep: 20.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park6": { produces: [""], cash: 0, upkeep: 25.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park7": { produces: [""], cash: 0, upkeep: 45.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "TreeT1": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "TreeT2": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "TreeT3": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "TreeT4": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "HedgeT1": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "HedgeT2": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "HedgeT3": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "HedgeT4": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "FenceT1": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "FenceT2": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "FenceT3": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "FenceT4": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PondT1": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PondT2": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PondT3": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "PondT4": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "DirtRoad": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "Quay": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "LawnT3": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "LawnT4": { produces: [""], cash: 0, upkeep: 24.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "LawnT3": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "LawnT4": { produces: [""], cash: 0, upkeep: 1.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "GravelRoad": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "AsphaltRoad": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
       "Tunnel": { produces: [""], cash: 0, upkeep: 0.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
-      "Park8": { produces: [""], cash: 0, upkeep: 1200.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Park8": { produces: [""], cash: 0, upkeep: 50.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "LargeWaterTower": { produces: [""], cash: 300, upkeep: 10.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "LargePowerSubstation": { produces: [""], cash: 200, upkeep: 10.0, workforce: 1, workforcetype: "Laborers", electricity: 0.0, water: 0.0 },
+      "TombOfTheUnmarkedSoldier": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "MemorialPark": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "MonumentOfRevenge": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "ArcDeTriomphe": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "TheLongMarchMemorial": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "StatueOfLiberty": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "Pyramids": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "EiffelTower": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "WashingtonMonument": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "AztecPyramid": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
+      "BrandenburgerGate": { produces: [""], cash: 30000, upkeep: 30.0, workforce: 0, workforcetype: "None", electricity: 0.0, water: 0.0 },
     };
 
 
@@ -344,7 +357,7 @@
     const buildingUpgradeMap = {};
     const buildingUpkeepReductionMap = {};
     const buildingWorkforceReductionMap = {};
-    const workforceEmojis = { Laborers: "🧑‍🌾", Manufacturers: "🏭", Technicians: "🔧", Specialists: "🧠", None: "➖" };
+    const workforceEmojis = { Laborers: "рџ§‘вЂЌрџЊѕ", Manufacturers: "рџЏ­", Technicians: "рџ”§", Specialists: "рџ§ ", None: "вћ–" };
     let activeBuildingSet = new Set();
 
     // --- INITIALIZATION ---
@@ -372,8 +385,8 @@
         selector.addEventListener('change', handleSelectionChange);
         amountInput.addEventListener('input', debounce(display, 300));
 
-        // Initial display
-        display();
+        // Initial display вЂ” defer so Mermaid finishes initializing
+        setTimeout(display, 100);
     }
 
     // Updated handleSelectionChange to always reset amount
@@ -518,23 +531,23 @@
             const totalPower = (def.electricity || 0) * count; const totalWater = (def.water || 0) * count;
             totals.cash += totalCash; totals.upkeep += totalUpkeep; totals.power += totalPower; totals.water += totalWater;
             const wfType = def.workforcetype || 'None'; if (wfType !== 'None' && totalWorkforce > 1e-9) { workforce[wfType] = (workforce[wfType] || 0) + totalWorkforce; }
-            let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
-            if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`; }
-            if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
-            htmlCenter += `<li>${buildingName}: ${count}x — ${details}</li>`;
+            let details = `рџ’°${totalCash.toFixed(0)} | рџ§ѕ${totalUpkeep.toFixed(1)}/d`;
+            if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || 'вќ“'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || 'вќ“'} 0 ${wfType}`; }
+            if (totalPower > 1e-9) details += ` | вљЎ${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | рџ’§${formatNumber(totalWater, 2)}`;
+            htmlCenter += `<li>${buildingName}: ${count}x вЂ” ${details}</li>`;
        }); htmlCenter += `</ul></div>`;
       outputDetailsDiv.innerHTML = htmlCenter;
 
       // --- Generate HTML for Left Column: Totals (#totalsDiv) ---
       let htmlTotals = `<div class="label">Grand Totals:</div><ul>`;
-      htmlTotals += `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`; htmlTotals += `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`;
-      htmlTotals += `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`; htmlTotals += `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`;
-      htmlTotals += Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`).join('');
+      htmlTotals += `<li>рџ’° Total Build Cost: $${totals.cash.toFixed(0)}</li>`; htmlTotals += `<li>рџ§ѕ Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`;
+      htmlTotals += `<li>вљЎ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`; htmlTotals += `<li>рџ’§ Total Water Demand: ${formatNumber(totals.water, 2)}</li>`;
+      htmlTotals += Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || 'вќ“'} Total ${type}: ${formatNumber(amt, 2)}</li>`).join('');
       htmlTotals += `</ul>`;
       totalsDivElement.innerHTML = htmlTotals;
 
       // --- Generate HTML for Left Column: External Inputs (#externalInputsDiv) ---
-      let htmlInputs = `<div class="label">📦 Total External Inputs Required per Cycle (Base Resources):</div><ul>`;
+      let htmlInputs = `<div class="label">рџ“¦ Total External Inputs Required per Cycle (Base Resources):</div><ul>`;
       const externalInputTotals = {};
       for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) { const product = data[productName]; if (neededAmount > 1e-9 && !product?.inputs) { externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount; } }
       const externalInputsList = Object.entries(externalInputTotals) .filter(([, amt]) => amt > 1e-9) .sort(([resA], [resB]) => resA.localeCompare(resB)) .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
@@ -546,8 +559,10 @@
       // --- Render Mermaid Graph ---
       try {
           const mermaidDefinition = generateMermaidGraph(integerBuildingCounts, integerProductNeeds, currentProductBoostMap);
-          graphDivElement.innerHTML = mermaidDefinition; graphDivElement.removeAttribute('data-processed');
-          await mermaid.run({ nodes: [graphDivElement] }); console.log("Mermaid rendering triggered.");
+          const graphId = 'mermaid-graph-' + Date.now();
+          const { svg } = await mermaid.render(graphId, mermaidDefinition);
+          graphDivElement.innerHTML = svg;
+          console.log("Mermaid rendering triggered.");
       } catch (e) { console.error("Error rendering Mermaid graph:", e); graphDivElement.innerHTML = '<p style="color: red; text-align: center;">Error generating visualization.</p>'; }
     }
 
@@ -557,9 +572,9 @@
       buildingNames.forEach(buildingName => {
         if (!buildings[buildingName]) { return; } const row = document.createElement('div'); row.className = 'upgrade-row';
         const label = document.createElement('label'); label.textContent = `${buildingName}:`; label.htmlFor = `boost-${buildingName}`;
-        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `🏭 ${Math.round(value * 100)}%`, `boost-${buildingName}`);
-        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
-        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
+        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `рџЏ­ ${Math.round(value * 100)}%`, `boost-${buildingName}`);
+        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `рџ§ѕ -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
+        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `рџ‘· -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
         row.appendChild(label); row.appendChild(boostSelect); row.appendChild(upkeepSelect); row.appendChild(workforceSelect); fragment.appendChild(row);
       }); buildingUpgradesDiv.appendChild(fragment);
       buildingNames.forEach(bName => {
