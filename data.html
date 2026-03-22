@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaiserpunk Production Chain Calculator</title>
+  <title>Kaiserpunk Production Chain Calculator 1.02.01 Anniversary Update</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -357,7 +357,7 @@
     const buildingUpgradeMap = {};
     const buildingUpkeepReductionMap = {};
     const buildingWorkforceReductionMap = {};
-    const workforceEmojis = { Laborers: "рџ§‘вЂЌрџЊѕ", Manufacturers: "рџЏ­", Technicians: "рџ”§", Specialists: "рџ§ ", None: "вћ–" };
+    const workforceEmojis = { Laborers: "🧑‍🌾", Manufacturers: "🏭", Technicians: "🔧", Specialists: "🧠", None: "➖" };
     let activeBuildingSet = new Set();
 
     // --- INITIALIZATION ---
@@ -385,7 +385,7 @@
         selector.addEventListener('change', handleSelectionChange);
         amountInput.addEventListener('input', debounce(display, 300));
 
-        // Initial display вЂ” defer so Mermaid finishes initializing
+        // Initial display — defer so Mermaid finishes initializing
         setTimeout(display, 100);
     }
 
@@ -531,23 +531,23 @@
             const totalPower = (def.electricity || 0) * count; const totalWater = (def.water || 0) * count;
             totals.cash += totalCash; totals.upkeep += totalUpkeep; totals.power += totalPower; totals.water += totalWater;
             const wfType = def.workforcetype || 'None'; if (wfType !== 'None' && totalWorkforce > 1e-9) { workforce[wfType] = (workforce[wfType] || 0) + totalWorkforce; }
-            let details = `рџ’°${totalCash.toFixed(0)} | рџ§ѕ${totalUpkeep.toFixed(1)}/d`;
-            if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || 'вќ“'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || 'вќ“'} 0 ${wfType}`; }
-            if (totalPower > 1e-9) details += ` | вљЎ${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | рџ’§${formatNumber(totalWater, 2)}`;
-            htmlCenter += `<li>${buildingName}: ${count}x вЂ” ${details}</li>`;
+            let details = `💰${totalCash.toFixed(0)} | 🧾${totalUpkeep.toFixed(1)}/d`;
+            if (totalWorkforce > 1e-9) { details += ` | ${workforceEmojis[wfType] || '❓'} ${formatNumber(totalWorkforce, 2)} ${wfType}`; } else if (def.workforce > 0) { details += ` | ${workforceEmojis[wfType] || '❓'} 0 ${wfType}`; }
+            if (totalPower > 1e-9) details += ` | ⚡${formatNumber(totalPower, 2)}`; if (totalWater > 1e-9) details += ` | 💧${formatNumber(totalWater, 2)}`;
+            htmlCenter += `<li>${buildingName}: ${count}x — ${details}</li>`;
        }); htmlCenter += `</ul></div>`;
       outputDetailsDiv.innerHTML = htmlCenter;
 
       // --- Generate HTML for Left Column: Totals (#totalsDiv) ---
       let htmlTotals = `<div class="label">Grand Totals:</div><ul>`;
-      htmlTotals += `<li>рџ’° Total Build Cost: $${totals.cash.toFixed(0)}</li>`; htmlTotals += `<li>рџ§ѕ Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`;
-      htmlTotals += `<li>вљЎ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`; htmlTotals += `<li>рџ’§ Total Water Demand: ${formatNumber(totals.water, 2)}</li>`;
-      htmlTotals += Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || 'вќ“'} Total ${type}: ${formatNumber(amt, 2)}</li>`).join('');
+      htmlTotals += `<li>💰 Total Build Cost: $${totals.cash.toFixed(0)}</li>`; htmlTotals += `<li>🧾 Total Daily Upkeep: $${totals.upkeep.toFixed(1)}</li>`;
+      htmlTotals += `<li>⚡ Total Electricity Demand: ${formatNumber(totals.power, 2)}</li>`; htmlTotals += `<li>💧 Total Water Demand: ${formatNumber(totals.water, 2)}</li>`;
+      htmlTotals += Object.entries(workforce) .sort(([typeA], [typeB]) => typeA.localeCompare(typeB)) .map(([type, amt]) => `<li>${workforceEmojis[type] || '❓'} Total ${type}: ${formatNumber(amt, 2)}</li>`).join('');
       htmlTotals += `</ul>`;
       totalsDivElement.innerHTML = htmlTotals;
 
       // --- Generate HTML for Left Column: External Inputs (#externalInputsDiv) ---
-      let htmlInputs = `<div class="label">рџ“¦ Total External Inputs Required per Cycle (Base Resources):</div><ul>`;
+      let htmlInputs = `<div class="label">📦 Total External Inputs Required per Cycle (Base Resources):</div><ul>`;
       const externalInputTotals = {};
       for (const [productName, neededAmount] of Object.entries(integerProductNeeds)) { const product = data[productName]; if (neededAmount > 1e-9 && !product?.inputs) { externalInputTotals[productName] = (externalInputTotals[productName] || 0) + neededAmount; } }
       const externalInputsList = Object.entries(externalInputTotals) .filter(([, amt]) => amt > 1e-9) .sort(([resA], [resB]) => resA.localeCompare(resB)) .map(([res, amt]) => `<li>${res}: ${formatNumber(amt, 4)}</li>`);
@@ -572,9 +572,9 @@
       buildingNames.forEach(buildingName => {
         if (!buildings[buildingName]) { return; } const row = document.createElement('div'); row.className = 'upgrade-row';
         const label = document.createElement('label'); label.textContent = `${buildingName}:`; label.htmlFor = `boost-${buildingName}`;
-        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `рџЏ­ ${Math.round(value * 100)}%`, `boost-${buildingName}`);
-        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `рџ§ѕ -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
-        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `рџ‘· -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
+        const boostSelect = createSelect(upgradeOptions, buildingUpgradeMap, buildingName, value => `🏭 ${Math.round(value * 100)}%`, `boost-${buildingName}`);
+        const upkeepSelect = createSelect(upkeepReductionOptions, buildingUpkeepReductionMap, buildingName, value => `🧾 -${Math.round(value * 100)}%`, `upkeep-${buildingName}`);
+        const workforceSelect = createSelect(workforceReductionOptions, buildingWorkforceReductionMap, buildingName, value => `👷 -${Math.round(value * 100)}%`, `workforce-${buildingName}`);
         row.appendChild(label); row.appendChild(boostSelect); row.appendChild(upkeepSelect); row.appendChild(workforceSelect); fragment.appendChild(row);
       }); buildingUpgradesDiv.appendChild(fragment);
       buildingNames.forEach(bName => {
